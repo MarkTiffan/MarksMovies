@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarksMovies.RazorPagesUI", "MarksMovies.RazorPagesUI\MarksMovies.RazorPagesUI.csproj", "{BDB379BD-00DD-44DC-AFAD-3038A68DD82F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarksMovies.DataModel", "MarksMovies.DataModel\MarksMovies.DataModel.csproj", "{F4C5DB7A-DDCE-441D-B1C6-8E2BA6055AC4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarksMovies.DataAccess", "MarksMovies.DataAccess\MarksMovies.DataAccess.csproj", "{C71B0B3A-6074-43AB-947E-C16E18C80C41}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarksMovies.Services", "MarksMovies.Services\MarksMovies.Services.csproj", "{3C93DF69-0CD3-46E2-B26D-505FF477E5EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarksMovies.TMDB", "MarksMovies.TMDB\MarksMovies.TMDB.csproj", "{847BEF17-78DA-47F2-AAE1-A791A31C3610}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarksMovies.Tests", "MarksMoviesTests\MarksMovies.Tests.csproj", "{CC6B2534-12B1-43D1-A86A-43CE89BBD469}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDB379BD-00DD-44DC-AFAD-3038A68DD82F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDB379BD-00DD-44DC-AFAD-3038A68DD82F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDB379BD-00DD-44DC-AFAD-3038A68DD82F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDB379BD-00DD-44DC-AFAD-3038A68DD82F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4C5DB7A-DDCE-441D-B1C6-8E2BA6055AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4C5DB7A-DDCE-441D-B1C6-8E2BA6055AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4C5DB7A-DDCE-441D-B1C6-8E2BA6055AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4C5DB7A-DDCE-441D-B1C6-8E2BA6055AC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C71B0B3A-6074-43AB-947E-C16E18C80C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C71B0B3A-6074-43AB-947E-C16E18C80C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C71B0B3A-6074-43AB-947E-C16E18C80C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C71B0B3A-6074-43AB-947E-C16E18C80C41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C93DF69-0CD3-46E2-B26D-505FF477E5EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C93DF69-0CD3-46E2-B26D-505FF477E5EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C93DF69-0CD3-46E2-B26D-505FF477E5EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C93DF69-0CD3-46E2-B26D-505FF477E5EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{847BEF17-78DA-47F2-AAE1-A791A31C3610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{847BEF17-78DA-47F2-AAE1-A791A31C3610}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{847BEF17-78DA-47F2-AAE1-A791A31C3610}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{847BEF17-78DA-47F2-AAE1-A791A31C3610}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC6B2534-12B1-43D1-A86A-43CE89BBD469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC6B2534-12B1-43D1-A86A-43CE89BBD469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC6B2534-12B1-43D1-A86A-43CE89BBD469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC6B2534-12B1-43D1-A86A-43CE89BBD469}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40D6E4C3-7837-4EAF-B2BB-3D130BA02049}
+	EndGlobalSection
+EndGlobal

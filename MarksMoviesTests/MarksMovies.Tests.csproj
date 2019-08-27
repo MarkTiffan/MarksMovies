@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="Moq" Version="4.12.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MarksMovies.DataAccess\MarksMovies.DataAccess.csproj" />
+    <ProjectReference Include="..\MarksMovies.DataModel\MarksMovies.DataModel.csproj" />
+    <ProjectReference Include="..\MarksMovies.Services\MarksMovies.Services.csproj" />
+    <ProjectReference Include="..\MarksMovies.TMDB\MarksMovies.TMDB.csproj" />
+    <ProjectReference Include="..\MarksMovies.RazorPagesUI\MarksMovies.RazorPagesUI.csproj" />
+  </ItemGroup>
+
+</Project>

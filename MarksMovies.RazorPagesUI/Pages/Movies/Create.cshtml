@@ -1,0 +1,148 @@
+﻿@page  "{tmdb_id:int?}"
+@model MarksMovies.Pages.Movies.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Movie</h4>
+<hr />
+
+<div class="container-fluid">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-3">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Movie.Title" class="control-label"></label>
+                    <input asp-for="Movie.Title" class="form-control" />
+                    <span asp-validation-for="Movie.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieOrTVShowSelection" class="control-label"></label>
+                    <select asp-for="MovieOrTVShowSelection" asp-items="@Html.GetEnumSelectList<MarksMovies.Models.MovieOrTVShow>()" class="form-control"></select>
+                    <span asp-validation-for="MovieOrTVShowSelection" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SelectedGenres" class="control-label"></label>
+                    <select multiple="multiple" asp-for="SelectedGenres" asp-items="@Html.GetEnumSelectList<MarksMovies.Models.GenreType>()" class="form-control"></select>
+                    <span asp-validation-for="SelectedGenres" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.Rating" class="control-label"></label>
+                    <select asp-for="Movie.Rating" asp-items="@Html.GetEnumSelectList<MarksMovies.Models.Rating>()" class="form-control"></select>
+                    <span asp-validation-for="Movie.Rating" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.MediaType" class="control-label"></label>
+                    <select asp-for="Movie.MediaType" asp-items="@Html.GetEnumSelectList<MarksMovies.Models.DiscType>()" class="form-control"></select>
+                    <span asp-validation-for="Movie.MediaType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.IMDB_ID" class="control-label"></label>
+                    <input asp-for="Movie.IMDB_ID" class="form-control" />
+                    <span asp-validation-for="Movie.IMDB_ID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Movie.Year" class="control-label"></label>
+                    <input asp-for="@Model.Movie.Year" class="form-control" />
+                    <span asp-validation-for="@Model.Movie.Year" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Movie.Season" class="control-label"></label>
+                    <input asp-for="@Model.Movie.Season" class="form-control" />
+                    <span asp-validation-for="@Model.Movie.Season" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.Comments" class="control-label"></label>
+                    <textarea rows="8" cols="40" asp-for="Movie.Comments" class="form-control"></textarea>
+                    <span asp-validation-for="Movie.Comments" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Movie.TMDB_ID" class="form-control" />
+                    <button asp-page-handler="Create" class="btn btn-primary">Create</button>
+                </div>
+
+            </div>
+            <div class="col">
+                <div>
+                    <span><button asp-page-handler="Fetch" class="btn btn-primary">Fetch TMDB Data</button></span>
+                </div>
+                <div class="container-fluid">
+                    @if (Model.SearchMovies != null)
+                    {
+                        @if (Model.SearchMovies.total_results > 0)
+                        {
+
+                            foreach (var result in Model.SearchMovies.results)
+                            {
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    @Html.DisplayFor(model => result.title)
+                                                </h5>
+                                                <h6 class="card-subtitle">
+                                                    @Html.DisplayFor(model => result.release_date)
+                                                </h6>
+                                                <p class="card-text">
+                                                    @Html.DisplayFor(model => result.overview)
+                                                </p>
+
+
+                                                <button asp-page-handler="Import" asp-route-tmdb_id="@result.id" class="btn btn-primary">Import</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                    @if (Model.SearchTV != null)
+                    {
+                        @if (Model.SearchTV.total_results > 0)
+                        {
+
+                            foreach (var result in Model.SearchTV.results)
+                            {
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    @Html.DisplayFor(model => result.name)
+                                                </h5>
+                                                <h6 class="card-subtitle">
+                                                    @Html.DisplayFor(model => result.first_air_date)
+                                                </h6>
+                                                <p class="card-text">
+                                                    @Html.DisplayFor(model => result.overview)
+                                                </p>
+
+
+                                                <button asp-page-handler="Import" asp-route-tmdb_id="@result.id" class="btn btn-primary">Import</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

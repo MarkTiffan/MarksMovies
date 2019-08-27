@@ -1,0 +1,127 @@
+﻿@page "{id:int?}"
+@model MarksMovies.Pages.Movies.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+    <a asp-page="./RankMovies">Rank Movies</a>
+    <a asp-page="./Export">Export</a>
+</p>
+<form>
+    <p>
+        <select asp-for="MovieGenre" asp-items="@Html.GetEnumSelectList<MarksMovies.Models.GenreType>()">
+            <option value=0>All</option>
+        </select>
+        Title: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th />
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.First().Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.First().Genres)
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.First().Season)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.First().Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.First().Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.First().MediaType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.First().Rank)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var count = 1;
+            foreach (var item in Model.Movie)
+            {
+                <tr id="@item.ID">
+                    <td>
+                        @count
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @if (item.Genres != null)
+                        {
+                            @for (int i = 0; i < item.Genres.Count(); i++)
+                            {
+
+                                @if (i < item.Genres.Count() - 1)
+                                {
+                                    <span>@Html.DisplayFor(modelItem => item.Genres[i].genre)</span>
+                                    <span>, </span>
+                                }
+                                else
+                                {
+                                    <span>@Html.DisplayFor(modelItem => item.Genres[i].genre)</span>
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        @if(item.MovieOrTVShow == Models.MovieOrTVShow.TV)
+                        {
+                            <img src="~/TV.png" />
+                        }
+                        else
+                        {
+                            <img src="~/Movie2.png" />
+                        }
+                    </td>
+                    <td>
+                        @if (item.Season != 0)
+                        {
+                            <span>@Html.DisplayFor(modelItem => item.Season)</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Year)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MediaType)
+                    </td>
+                    <td>
+                        @if (item.Rank != 0)
+                        {
+                            @Html.DisplayFor(modelItem => item.Rank)
+                        }
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+                count += 1;
+            }
+            
+        }
+    </tbody>
+</table>

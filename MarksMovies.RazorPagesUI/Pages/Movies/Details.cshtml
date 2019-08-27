@@ -1,0 +1,173 @@
+﻿@page "{id:int}"
+@model MarksMovies.Pages.Movies.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+
+
+
+<div class="container-fluid">
+    <h1>Details</h1>
+    <h4>Movie</h4>
+    <hr />
+    <div class="row">
+        <div class="col">
+            <span><a asp-page="./Edit" asp-route-id="@Model.Movie.ID">Edit</a> | </span>
+            <span><a href="@(Url.Content("~/Movies/Index") + "#" + Model.Movie.ID)"> Back to List</a></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg">
+
+            <dl class="row">
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Movie.Title)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Movie.Title)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Movie.Genres)
+                </dt>
+                <dd class="col-sm-6">
+                    @if (Model.Movie.Genres != null)
+                    {
+                        @for (int i = 0; i < Model.Movie.Genres.Count(); i++)
+                        {
+
+                            @if (i < Model.Movie.Genres.Count() - 1)
+                            {
+                                <span>@Html.DisplayFor(modelItem => Model.Movie.Genres[i].genre)</span>
+                                <span>, </span>
+                            }
+                            else
+                            {
+                                <span>@Html.DisplayFor(modelItem => Model.Movie.Genres[i].genre)</span>
+                            }
+                        }
+                    }
+
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Movie.Year)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Movie.Year)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Movie.Rating)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Movie.Rating)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Movie.MediaType)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Movie.MediaType)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Movie.IMDB_ID)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Movie.IMDB_ID)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Movie.Rank)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Movie.Rank)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Movie.Comments)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Movie.Comments)
+                </dd>
+            </dl>
+
+        </div>
+        <div class="col-lg">
+            <div class="card">
+                <h5 class="card-header">
+                    <i>
+                        @if (Model.Movie.MovieOrTVShow == Models.MovieOrTVShow.Movie)
+                        {
+                            <span>@Model.Tagline</span>
+                        }
+                        else
+                        { 
+                            <span>Season:@Model.Movie.Season of @Model.SeasonCount</span>
+                        }
+                    </i>
+                </h5>
+                <p class="card-body">@Model.Overview</p>
+                <h6 class="card-footer">Runtime: @Model.Runtime minutes</h6>
+            </div>
+        </div>
+        <div class="col-lg">
+            <img src="@Model.PosterURL" />
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col">
+            <h5>Top 5 Cast:</h5>
+
+            @{
+                var count = 0;
+                if (Model.MovieDetails != null)
+                {
+                    if (Model.MovieDetails.credits.cast.Count < 5)
+                    {
+                        count = Model.MovieDetails.credits.cast.Count;
+                    }
+                    else
+                    {
+                        count = 5;
+                    }
+                    for (var i = 0; i < count; i++)
+                    {
+                        <dl class="row">
+                            <dt class="col-sm-2">
+                                @Model.MovieDetails.credits.cast[i].name
+                            </dt>
+                            <dd class="col-auto">
+                                @Model.MovieDetails.credits.cast[i].character
+                            </dd>
+                        </dl>
+                    }
+                }
+
+                if (Model.TVDetails != null)
+                {
+                    if (Model.TVDetails.credits.cast.Count < 5)
+                    {
+                        count = Model.TVDetails.credits.cast.Count;
+                    }
+                    else
+                    {
+                        count = 5;
+                    }
+                    for (var i = 0; i < count; i++)
+                    {
+                        <dl class="row">
+                            <dt class="col-sm-2">
+                                @Model.TVDetails.credits.cast[i].name
+                            </dt>
+                            <dd class="col-auto">
+                                @Model.TVDetails.credits.cast[i].character
+                            </dd>
+                        </dl>
+                    }
+                }
+            }
+        </div>
+
+    </div>
+</div>
+
