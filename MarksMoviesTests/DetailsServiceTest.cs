@@ -2,6 +2,7 @@
 using MarksMovies.DataAccess;
 using MarksMovies.Models;
 using MarksMovies.Services;
+using MarksMovies.TMDB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

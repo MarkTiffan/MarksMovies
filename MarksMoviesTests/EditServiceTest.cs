@@ -9,6 +9,7 @@ using MarksMovies;
 using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.EntityFrameworkCore;
 using MarksMovies.DataAccess;
+using MarksMovies.TMDB;
 
 namespace MarksMoviesTests
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MarksMovies.Models;
 
-namespace MarksMovies
+namespace MarksMovies.TMDB
 {
     public class SearchMovies
     {

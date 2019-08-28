@@ -2,7 +2,7 @@
 using System.Net.Http;
 using Newtonsoft.Json;
 
-namespace MarksMovies
+namespace MarksMovies.TMDB
 {
 
     public class TMDBapi : ITMDBapi

@@ -4,8 +4,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MarksMovies.Models;
 
-namespace MarksMovies.Models
+namespace MarksMovies.DataAccess
 {
     public static class SeedData
     {
@@ -22,17 +23,7 @@ namespace MarksMovies.Models
                 }
                 try
                 {
-
-                    //string[] lines = System.IO.File.ReadAllLines(@"./Assets/MovieList.txt");
-
-                    //foreach (string line in lines)
-                    //{
-                    //    context.Movie.Add(new Movie {
-                    //        Title = line
-                    //    });
-                    //}
-
-                    string json = System.IO.File.ReadAllText(@"./Assets/movies.json");
+                    string json = System.IO.File.ReadAllText(@"./Assets/Movies.json");
                     IList<Movie> Movies = JsonConvert.DeserializeObject<IList<Movie>>(json);
 
                     foreach (var movie in Movies)

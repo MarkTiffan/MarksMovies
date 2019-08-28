@@ -1,15 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MarksMovies.Models;
-using System.Collections.Generic;
-using Moq;
-using System.Threading.Tasks;
-using System.Threading;
-using MarksMovies.Services;
-using MarksMovies;
-using Microsoft.EntityFrameworkCore.InMemory;
-using Microsoft.EntityFrameworkCore;
-using System;
 using MarksMovies.DataAccess;
+using System.Threading.Tasks;
+using MarksMovies.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarksMoviesTests
 {

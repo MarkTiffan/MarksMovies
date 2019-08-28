@@ -1,11 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MarksMovies.Models;
+using MarksMovies.DataAccess;
 using System.Collections.Generic;
 using Moq;
 using System.Threading.Tasks;
 using MarksMovies.Services;
 using MarksMovies;
 using Microsoft.EntityFrameworkCore;
+using MarksMovies.TMDB;
 
 namespace MarksMoviesTests
 {

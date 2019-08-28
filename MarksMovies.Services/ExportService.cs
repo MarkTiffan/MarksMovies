@@ -36,7 +36,7 @@ namespace MarksMovies.Services
             if (Movies == null)
                 return null;
             else
-                return JObject.Parse(JsonConvert.SerializeObject(Movies)).ToString(); ;
+                return JArray.Parse(JsonConvert.SerializeObject(Movies)).ToString(); ;
         }
 
 

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using MarksMovies.Models;
 
-namespace MarksMovies.Models
+namespace MarksMovies.DataAccess
 {
     public class MarksMoviesContext : DbContext, IMarksMoviesContext
     {

@@ -1,7 +1,6 @@
-﻿
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace MarksMovies
+namespace MarksMovies.TMDB
 {
     public interface ITMDBapi
     {

@@ -1,5 +1,6 @@
 ﻿using MarksMovies;
 using MarksMovies.Services;
+using MarksMovies.TMDB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net.Http;
 using System.Threading.Tasks;

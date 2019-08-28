@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MarksMovies.Models;
+using MarksMovies.TMDB;
 
 namespace MarksMovies.Services
 {
