@@ -44,3 +44,5 @@ A movie can be deleted from this page
 This page consists of a simple listing of all the movies in the catalog (excluding TV Shows).  The list supports drag and drop for re-ordering according to personal preference.  When you are done ranking movies you can **Save** the rank values to the database.
 ### Export page
 This page currently supports exporting the list of movies from the catalog to Excel or to Json.
+## Swagger
+This is an auto-generated Swagger page for testing the API endpoints for this application.
