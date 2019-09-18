@@ -12,7 +12,7 @@ There are currently 6 projects in this solution:
 This is the front end web project built using Razor Pages in ASP.Net Core.  This is also where you will find the Program.cs, Startup.cs and application.json files.
 ## Configuration and Initial Visual Studio Setup
 
- 1. You will need to modify the database connection string in
+ 1. You may need to modify the database connection string in
     **application.json** within the **MarksMovies.RazorPagesUI** project.
     
     The default value to use would be:
