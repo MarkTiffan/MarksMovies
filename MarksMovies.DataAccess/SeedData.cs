@@ -28,6 +28,7 @@ namespace MarksMovies.DataAccess
 
                     foreach (var movie in Movies)
                     {
+                        movie.ID = 0;
                         context.Movie.Add(movie);
                     }
 

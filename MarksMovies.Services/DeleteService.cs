@@ -1,5 +1,4 @@
 ﻿using MarksMovies.DataAccess;
-using MarksMovies.Models;
 using System.Threading.Tasks;
 
 namespace MarksMovies.Services
@@ -7,24 +6,17 @@ namespace MarksMovies.Services
     public class DeleteService
     {
         private readonly IMovieDBAccess _dbAccess;
-
-        public DeleteService(IMovieDBAccess dbAccess)
-        {
-            _dbAccess = dbAccess;
-        }
-
         public const int DELETE_FAIL = 0;
-        public const int DELETE_OK = 1;
-
-        public async Task<Movie> GetMovieAsync(int? id)
+        public const int DELETE_SUCCESS = 1;
+        public DeleteService(IMovieDBAccess DbAccess)
         {
-            return await _dbAccess.GetMovieAsync(id);
+            _dbAccess = DbAccess;
         }
 
 
-        public async Task<int> DeleteMovieAsync(int? id)
+        public async Task<int> DeleteMovieAsync(int? ID)
         {
-            return await _dbAccess.DeleteMovieAsync(id);
+            return await _dbAccess.DeleteMovieAsync(ID);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Linq;
 
 namespace MarksMovies.Models
 {
@@ -50,7 +51,12 @@ namespace MarksMovies.Models
 
     public class Movie
     {
-        [JsonIgnore]
+        public Movie()
+        {
+            Genres = new List<Genre>();
+            Year = 1900;
+        }
+
         public int ID { get; set; }
 
         [StringLength(100, MinimumLength = 1)]
@@ -86,12 +92,6 @@ namespace MarksMovies.Models
 
         public int Season { get; set; }
 
-        public Movie()
-        {
-            Genres = new List<Genre>();
-            Year = 1900;
-        }
-
         public static Rating RatingFromString(string rating)
         {
             switch (rating)
@@ -125,20 +125,16 @@ namespace MarksMovies.Models
 
         public string GetGenresAsString()
         {
-            string genreText = "";
+            string genreText = string.Empty;
             
-            if (this.Genres.Count > 0)
+            for (var i = 0; i < this.Genres.Count; i++)
             {
-                for (var i = 0; i < this.Genres.Count;i++)
-                {
-                    genreText += EnumHelper<GenreType>.GetDisplayValue(this.Genres[i].genre);
-                    if(i < this.Genres.Count -1)
-                        genreText += ", ";
-                }
-                return genreText;
+                genreText += EnumHelper<GenreType>.GetDisplayValue(this.Genres[i].genre);
+                if(i < this.Genres.Count - 1)
+                    genreText += ", ";
             }
-            else
-                return "";
+            return genreText;
+            
         }
 
 

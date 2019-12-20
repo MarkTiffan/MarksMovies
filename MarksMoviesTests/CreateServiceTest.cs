@@ -19,16 +19,15 @@ namespace MarksMoviesTests
         {
             var mockTMDBapi = new Mock<ITMDBapi>();
             Movie Movie = null;
-            List<GenreType> SelectedGenres = null;
             var expectedResult = 0;
             int result;
 
-            var service = new CreateService(dbAccess, mockTMDBapi.Object);
+            var service = new CreateService(DbAccess, mockTMDBapi.Object);
 
-            var localresult = await service.CreateAsync(Movie, SelectedGenres);
+            var localresult = await service.CreateAsync(Movie);
             result = localresult; 
 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var newcontext = new MarksMoviesContext(Options))
             {
                 Assert.AreEqual(0, await newcontext.Movie.CountAsync<Movie>());
                 Assert.AreEqual(result, expectedResult);
@@ -42,22 +41,17 @@ namespace MarksMoviesTests
             var title = "Avenger's Endgame";
             SearchMovies searchmovies = new SearchMovies();
             Movie Movie = CommonTestFunctions.GetSampleMovie();
-            List<GenreType> SelectedGenres = new List<GenreType>()
-            {
-                GenreType.Action,
-                GenreType.SciFi,
-                GenreType.Fantasy
-            };
+
             var expectedResult = 1;
             int result;
 
             mockTMDBapi.Setup(y => y.FetchMovieAsync(title)).ReturnsAsync(searchmovies);
 
-            var service = new CreateService(dbAccess, mockTMDBapi.Object);
+            var service = new CreateService(DbAccess, mockTMDBapi.Object);
 
-            result = await service.CreateAsync(Movie, SelectedGenres);
+            result = await service.CreateAsync(Movie);
                 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var newcontext = new MarksMoviesContext(Options))
             {
                 
                 Assert.AreEqual(result, expectedResult);
@@ -81,17 +75,16 @@ namespace MarksMoviesTests
             var title = "Avenger's Endgame";
             SearchMovies searchmovies = new SearchMovies();
             Movie Movie = CommonTestFunctions.GetSampleMovie();
-            List<GenreType> SelectedGenres = null;
             var expectedResult = 1;
             int result;
 
             mockTMDBapi.Setup(y => y.FetchMovieAsync(title)).ReturnsAsync(searchmovies);
 
-            var service = new CreateService(dbAccess, mockTMDBapi.Object);
+            var service = new CreateService(DbAccess, mockTMDBapi.Object);
 
-            result = await service.CreateAsync(Movie, SelectedGenres);
+            result = await service.CreateAsync(Movie);
 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var newcontext = new MarksMoviesContext(Options))
             {
 
                 Assert.AreEqual(result, expectedResult);
@@ -118,22 +111,16 @@ namespace MarksMoviesTests
             var title = "House";
             SearchTV searchTV = new SearchTV();
             Movie Movie = CommonTestFunctions.GetSampleTVShow();
-            List<GenreType> SelectedGenres = new List<GenreType>()
-            {
-                GenreType.Drama,
-                GenreType.Comedy,
-                GenreType.Mystery
-            };
             var expectedResult = 1;
             int result;
 
             mockTMDBapi.Setup(y => y.FetchTVShowsAsync(title)).ReturnsAsync(searchTV);
 
-            var service = new CreateService(dbAccess, mockTMDBapi.Object);
+            var service = new CreateService(DbAccess, mockTMDBapi.Object);
 
-            result = await service.CreateAsync(Movie, SelectedGenres);
+            result = await service.CreateAsync(Movie);
 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var newcontext = new MarksMoviesContext(Options))
             {
 
                 Assert.AreEqual(result, expectedResult);
@@ -159,17 +146,16 @@ namespace MarksMoviesTests
             var title = "House";
             SearchTV searchTV = new SearchTV();
             Movie Movie = CommonTestFunctions.GetSampleTVShow();
-            List<GenreType> SelectedGenres = null;
             var expectedResult = 1;
             int result;
 
             mockTMDBapi.Setup(y => y.FetchTVShowsAsync(title)).ReturnsAsync(searchTV);
 
-            var service = new CreateService(dbAccess, mockTMDBapi.Object);
+            var service = new CreateService(DbAccess, mockTMDBapi.Object);
 
-            result = await service.CreateAsync(Movie, SelectedGenres);
+            result = await service.CreateAsync(Movie);
 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var newcontext = new MarksMoviesContext(Options))
             {
 
                 Assert.AreEqual(result, expectedResult);

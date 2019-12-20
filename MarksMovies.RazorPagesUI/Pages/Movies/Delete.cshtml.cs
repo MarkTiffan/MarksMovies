@@ -2,47 +2,46 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MarksMovies.Models;
-using MarksMovies.Services;
+using MarksMovies.WebServices;
 
 namespace MarksMovies.Pages.Movies
 {
     public class DeleteModel : PageModel
     {
-        private readonly DeleteService _service;
+        private readonly WebDeleteService _service;
 
-        public DeleteModel(DeleteService service)
+        public DeleteModel(WebDeleteService Service)
         {
-            _service = service;
+            _service = Service;
+            Movie = new Movie();
         }
 
         [BindProperty]
         public Movie Movie { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? ID)
         {
-            if (id == null)
+            if (ID == null)
             {
                 return NotFound();
             }
 
-            Movie = await _service.GetMovieAsync(id);
+            Movie = await _service.GetAsync(ID);
 
             if (Movie == null)
                 return NotFound();
             else
                 return Page();
-
-            
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int? ID)
         {
-            if (id == null)
+            if (ID == null)
             {
                 return NotFound();
             }
 
-            if (await _service.DeleteMovieAsync(id) == DeleteService.DELETE_FAIL)
+            if (await _service.DeleteMovieAsync(ID) == WebDeleteService.DELETE_FAIL)
                 return NotFound();
             else
                 return RedirectToPage("./Index");

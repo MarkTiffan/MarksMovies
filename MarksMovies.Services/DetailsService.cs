@@ -13,9 +13,9 @@ namespace MarksMovies.Services
 
 
 
-        public DetailsService(IMovieDBAccess dbAccess, ITMDBapi TMDBapi)
+        public DetailsService(IMovieDBAccess DbAccess, ITMDBapi TMDBapi)
         {
-            _dbAccess = dbAccess;
+            _dbAccess = DbAccess;
             _tmdbapi = TMDBapi;
         }
 

@@ -2,19 +2,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MarksMovies.Models;
-using MarksMovies.Services;
 using MarksMovies.TMDB;
+using System.Linq;
+using MarksMovies.WebServices;
 
 namespace MarksMovies.Pages.Movies
 {
     public class DetailsModel : PageModel
     {
-        private readonly DetailsService _service;
+        private readonly WebDetailsService _service;
 
 
-        public DetailsModel(DetailsService service)
+        public DetailsModel(WebDetailsService Service)
         {
-            _service = service;
+            _service = Service;
+            Movie = new Movie();
+            MovieDetails = new MovieDetails();
+            TVDetails = new TVShowDetails();
         }
 
         public Movie Movie { get; set; }
@@ -40,67 +44,52 @@ namespace MarksMovies.Pages.Movies
                 return NotFound();
             }
 
-            Movie = await _service.GetMovieAsync(id);
+            Movie = await _service.GetAsync(id);
 
-            if (Movie == null)
-            {
+            if (Movie == null || Movie?.TMDB_ID <= 0)
                 return NotFound();
-            }
-            else
+
+            if (Movie.MovieOrTVShow == MovieOrTVShow.Movie)
             {
-                if (Movie.TMDB_ID > 0)
+                MovieDetails = await _service.GetMovieDetailsAsync(Movie.TMDB_ID);
+
+                if (MovieDetails != null)
                 {
-                    if (Movie.MovieOrTVShow == MovieOrTVShow.Movie)
+                    PosterURL = "https://image.tmdb.org/t/p/w185" + MovieDetails.poster_path;
+                    Overview = MovieDetails.overview;
+                    Tagline = MovieDetails.tagline;
+                    Runtime = MovieDetails.runtime;
+                }
+            } else if (Movie.MovieOrTVShow == MovieOrTVShow.TV)
+            {
+                TVDetails = await _service.GetTVSHowDetailsAsync(Movie.TMDB_ID);
+
+                if (TVDetails == null)
+                    return Page();
+                
+                Overview = TVDetails.overview;
+                PosterURL = "https://image.tmdb.org/t/p/w185" + TVDetails.poster_path;
+
+                foreach (var season in TVDetails.seasons)
+                {
+                    if (season.season_number == Movie.Season)
                     {
-                        MovieDetails = await _service.GetMovieDetailsAsync(Movie.TMDB_ID);
-
-                        if (MovieDetails != null)
-                        {
-                            PosterURL = "https://image.tmdb.org/t/p/w185" + MovieDetails.poster_path;
-
-                            Overview = MovieDetails.overview;
-
-                            Tagline = MovieDetails.tagline;
-
-                            Runtime = MovieDetails.runtime;
-                        }
-                    } else if (Movie.MovieOrTVShow == MovieOrTVShow.TV)
-                    {
-                        TVDetails = await _service.GetTVSHowDetailsAsync(Movie.TMDB_ID);
-
-                        if(TVDetails != null)
-                        {
-                            Overview = TVDetails.overview;
-                            PosterURL = "https://image.tmdb.org/t/p/w185" + TVDetails.poster_path;
-                            if (Movie.Season != 0)
-                            {
-                                if (TVDetails.seasons.Count > 0)
-                                { 
-                                    for (var i = 0; i < TVDetails.number_of_seasons - 1; i++)
-                                    {
-                                        if (TVDetails.seasons[i].season_number == Movie.Season)
-                                        {
-                                            if(!string.IsNullOrEmpty(TVDetails.seasons[i].poster_path))
-                                                PosterURL = "https://image.tmdb.org/t/p/w185" + TVDetails.seasons[i].poster_path;
-                                            if(!string.IsNullOrEmpty(TVDetails.seasons[i].overview))
-                                                Overview = TVDetails.seasons[i].overview;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-
-                            Tagline = "";
-
-                            SeasonCount = TVDetails.number_of_seasons;
-
-                            if (TVDetails.episode_run_time.Count > 0)
-                                Runtime = TVDetails.episode_run_time[0];
-                        }
+                        if(!string.IsNullOrEmpty(season.poster_path))
+                            PosterURL = "https://image.tmdb.org/t/p/w185" + season.poster_path;
+                        if(!string.IsNullOrEmpty(season.overview))
+                            Overview = season.overview;
+                        break;
                     }
                 }
-            }
 
+                Tagline = string.Empty;
+
+                SeasonCount = TVDetails.number_of_seasons;
+
+                if (TVDetails.episode_run_time?.Count() > 0)
+                    Runtime = TVDetails.episode_run_time.ToList().FirstOrDefault();
+            }
+            
             return Page();
         }
     }

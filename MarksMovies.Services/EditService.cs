@@ -11,19 +11,14 @@ namespace MarksMovies.Services
 
         private readonly IMovieDBAccess _dbAccess;
 
-        public EditService(IMovieDBAccess dbAccess, ITMDBapi TMDBapi) : base(TMDBapi)
+        public EditService(IMovieDBAccess DbAccess, ITMDBapi TMDBapi) : base(TMDBapi)
         {
-            _dbAccess = dbAccess;
+            _dbAccess = DbAccess;
         }
 
-
-        public async Task<Movie> GetAsync(int? id)
-        {
-            return await _dbAccess.GetMovieAsync(id);
-        }
 
         
-        public async Task<int> SaveMovieAsync(Movie Movie, List<GenreType> SelectedGenres = null)
+        public async Task<int> SaveMovieAsync(Movie Movie, IList<GenreType> SelectedGenres = null)
         {
             return await _dbAccess.SaveMovieAsync(Movie, SelectedGenres);
         }

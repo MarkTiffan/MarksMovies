@@ -17,15 +17,15 @@ namespace MarksMoviesTests
         public void OnGet_VerifyMovieListOnSuccess()
         {
             IList<Movie> Movies;
-            context.Movie.Add(CommonTestFunctions.GetSampleMovie(true));
-            context.SaveChanges();
+            Context.Movie.Add(CommonTestFunctions.GetSampleMovie(true));
+            Context.SaveChanges();
 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var newcontext = new MarksMoviesContext(Options))
             {
                 MovieDBAccess db = new MovieDBAccess(newcontext);
                 var service = new RankMoviesService(db);
 
-                Movies = service.OnGet();
+                Movies = service.GetRankedMovies();
 
                 Assert.IsNotNull(Movies);
                 Assert.IsTrue(Movies.Count == 1);
@@ -39,23 +39,23 @@ namespace MarksMoviesTests
             int result;
             var itemIds = "2,1";
             IList<Movie> Movies;
-            context.Movie.Add(CommonTestFunctions.GetSampleMovie(true,1));
-            context.Movie.Add(CommonTestFunctions.GetSampleTVShow(true,2));
-            context.SaveChanges();
+            Context.Movie.Add(CommonTestFunctions.GetSampleMovie(true,1));
+            Context.Movie.Add(CommonTestFunctions.GetSampleTVShow(true,2));
+            Context.SaveChanges();
 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var newcontext = new MarksMoviesContext(Options))
             {
                 MovieDBAccess db = new MovieDBAccess(newcontext);
                 var service = new RankMoviesService(db);
 
                 result = await service.UpdateRanksAsync(itemIds);
             }
-            using (var newestcontext = new MarksMoviesContext(options))
+            using (var newestcontext = new MarksMoviesContext(Options))
             {
                 MovieDBAccess newdb = new MovieDBAccess(newestcontext);
                 var service = new RankMoviesService(newdb);
 
-                Movies = service.OnGet();
+                Movies = service.GetRankedMovies();
 
                 Assert.IsNotNull(Movies);
                 Assert.IsTrue(Movies.Count == 2);

@@ -11,13 +11,13 @@ namespace MarksMovies.Services
     {
         private readonly IMovieDBAccess _dbAccess;
 
-        public RankMoviesService(IMovieDBAccess dbAccess)
+        public RankMoviesService(IMovieDBAccess DbAccess)
         {
-            _dbAccess = dbAccess;
+            _dbAccess = DbAccess;
         }
 
 
-        public IList<Movie> OnGet()
+        public IList<Movie> GetRankedMovies()
         {
             return _dbAccess.GetRankedMovies();
         }
@@ -32,12 +32,23 @@ namespace MarksMovies.Services
                 itemIdList = itemIds.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
                 foreach (var itemId in itemIdList)
                 {
-                    Movie movie = await _dbAccess.GetMovieAsync(itemId);
-                    movie.Rank = count;
-                    _dbAccess.Update(movie);
-                    await _dbAccess.SaveChangesAsync();
-                    count++;
+                    try
+                    {
+                        Movie movie = await _dbAccess.GetMovieAsync(itemId);
+                        if (movie != null)
+                        {
+                            movie.Rank = count;
+                            _dbAccess.Update(movie);
+                        }
+                        else
+                            throw new Exception($"Movie: {itemId} came back null.");
+                        count++;
+                    }
+                    catch(Exception e) {
+                        throw new Exception(e.Message);
+                    }
                 }
+                await _dbAccess.SaveChangesAsync();
             }
             return 0;
         }

@@ -1,9 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using MarksMovies.DataAccess;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MarksMovies
@@ -22,18 +18,6 @@ namespace MarksMovies
             {
                 var services = scope.ServiceProvider;
 
-                try
-                {
-                    var context = services.
-                        GetRequiredService<MarksMoviesContext>();
-                    context.Database.Migrate();
-                    SeedData.Initialize(services);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
-                }
             }
 
             host.Run();

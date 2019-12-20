@@ -37,7 +37,7 @@ namespace MarksMovies.TMDB
 
         public int budget { get; set; }
 
-        public IList<MovieDetailGenre> genres { get; set; }
+        public IEnumerable<MovieDetailGenre> genres { get; set; }
 
         public string homepage { get; set; }
 
@@ -55,9 +55,9 @@ namespace MarksMovies.TMDB
 
         public string poster_path { get; set; }
 
-        public IList<ProductionCompanies> production_companies { get; set; }
+        public IEnumerable<ProductionCompanies> production_companies { get; set; }
 
-        public IList<ProductionCountries> production_countries { get; set; }
+        public IEnumerable<ProductionCountries> production_countries { get; set; }
 
         public string release_date { get; set; }
 
@@ -65,7 +65,7 @@ namespace MarksMovies.TMDB
 
         public int runtime { get; set; }
 
-        public IList<SpokenLanguages> spoken_languages { get; set; }
+        public IEnumerable<SpokenLanguages> spoken_languages { get; set; }
 
         public string status { get; set; }
 
@@ -136,7 +136,7 @@ namespace MarksMovies.TMDB
         }
         public int id { get; set; }
 
-        public IList<ReleaseDateResults> results { get; set; }
+        public IEnumerable<ReleaseDateResults> results { get; set; }
     }
 
     public class ReleaseDateResults
@@ -147,7 +147,7 @@ namespace MarksMovies.TMDB
         }
         public string iso_3166_1 { get; set; }
 
-        public IList<ReleaseDate> release_dates { get; set; }
+        public IEnumerable<ReleaseDate> release_dates { get; set; }
     }
 
     public class ReleaseDate
@@ -175,9 +175,9 @@ namespace MarksMovies.TMDB
 
         public int id { get; set; }
 
-        public List<CastMember> cast { get; set; }
+        public IEnumerable<CastMember> cast { get; set; }
 
-        public List<CrewMember> crew { get; set; }
+        public IEnumerable<CrewMember> crew { get; set; }
     }
 
 

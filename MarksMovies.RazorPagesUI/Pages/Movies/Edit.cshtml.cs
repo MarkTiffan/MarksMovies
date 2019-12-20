@@ -4,15 +4,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MarksMovies.Models;
-using MarksMovies.Services;
 using System.ComponentModel.DataAnnotations;
 using MarksMovies.TMDB;
+using MarksMovies.WebServices;
 
 namespace MarksMovies.Pages.Movies
 {
     public class EditModel : PageModel
     {
-        private readonly EditService _service;
+        private readonly WebEditService _service;
+
+        public EditModel(WebEditService Service)
+        {
+            _service = Service;
+            SearchMovies = new SearchMovies();
+            SearchTV = new SearchTV();
+            Movie = new Movie();
+            SelectedGenres = new List<GenreType>();
+        }
 
         public SearchMovies SearchMovies { get; set; }
 
@@ -22,52 +31,40 @@ namespace MarksMovies.Pages.Movies
         public Movie Movie { get; set; }
 
         [BindProperty]
-        public List<GenreType> SelectedGenres { get; set; }
+        public IList<GenreType> SelectedGenres { get; set; }
 
         [Display(Name = "Movie or Television?")]
         [BindProperty]
         public MovieOrTVShow MovieOrTVShowSelection { get; set; }
 
-        public EditModel(EditService service)
-        {
-            _service = service;
-        }
+
         
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? ID)
         {
-            if (id == null)
+            if (ID == null)
             {
                 return NotFound();
             }
 
-
-            Movie = await _service.GetAsync(id);
+            Movie = await _service.GetAsync(ID);
 
             if (Movie == null)
-            {
                 return NotFound();
-            }
-            else
+
+            MovieOrTVShowSelection = Movie.MovieOrTVShow;
+
+            foreach (var mg in Movie.Genres)
             {
-                MovieOrTVShowSelection = Movie.MovieOrTVShow;
-
-                if (Movie.Genres.Count() > 0)
-                {
-                    SelectedGenres = new List<GenreType>();
-
-                    foreach (var item in Movie.Genres)
-                    {
-                        SelectedGenres.Add(item.genre);
-                    }
-                }
+                SelectedGenres.Add(mg.genre);
             }
+            
             return Page();
         }
 
 
 
-        public async Task<IActionResult> OnPostEditAsync(int? id)
+        public async Task<IActionResult> OnPostEditAsync(int? ID)
         {
 
             if (!ModelState.IsValid)
@@ -78,7 +75,7 @@ namespace MarksMovies.Pages.Movies
             Movie.MovieOrTVShow = MovieOrTVShowSelection;
             await _service.SaveMovieAsync(Movie, SelectedGenres);
 
-            return Redirect(Url.Content("~/Movies/Index") + "#" + id);
+            return Redirect(Url.Content("~/Movies/Index") + "#" + ID);
         }
 
 
@@ -89,7 +86,7 @@ namespace MarksMovies.Pages.Movies
                 return Page();
             }
 
-            if (Movie.Title != "")
+            if (Movie.Title != string.Empty)
             {
                 if (MovieOrTVShowSelection == MovieOrTVShow.Movie)
                     SearchMovies = await _service.FetchMovieAsync(Movie.Title);
@@ -111,7 +108,6 @@ namespace MarksMovies.Pages.Movies
 
             if (TMDB_ID > 0)
             {
-
                 if (SelectedGenres.Count > 0)
                 {
                     SelectedGenres.Clear();
@@ -122,15 +118,9 @@ namespace MarksMovies.Pages.Movies
                 else if(MovieOrTVShowSelection == MovieOrTVShow.TV)
                     Movie = await _service.ImportTVShowAsync(TMDB_ID, Movie.Title, Movie);
 
-                if (Movie.Genres != null)
+                foreach (var g in Movie.Genres)
                 {
-                    if (Movie.Genres.Count > 0)
-                    {
-                        foreach (var g in Movie.Genres)
-                        {
-                            SelectedGenres.Add(g.genre);
-                        }
-                    }
+                    SelectedGenres.Add(g.genre);
                 }
             }
 

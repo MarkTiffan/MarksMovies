@@ -3,31 +3,32 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MarksMovies.Models;
-using MarksMovies.Services;
+using MarksMovies.WebServices;
 
 namespace MarksMovies.Pages.Movies
 {
     public class RankMoviesModel : PageModel
     {
-        private readonly RankMoviesService _service;
+        private readonly WebRankMovieService _service;
 
-        public RankMoviesModel(RankMoviesService service)
+        public RankMoviesModel(WebRankMovieService Service)
         {
-            _service = service;
+            _service = Service;
         }
 
 
         public IList<Movie> Movies { get; set; }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGet()
         {
-            Movies = _service.OnGet();
+            Movies = await _service.GetRankedMoviesAsync();
+            return Page();
         }
 
-        public async Task<IActionResult> OnPostUpdateRanksAsync(string itemIds)
+        public async Task<IActionResult> OnPostUpdateRanksAsync(string ItemIds)
         {
 
-            _ = await _service.UpdateRanksAsync(itemIds);
+            _ = await _service.UpdateRanksAsync(ItemIds);
 
             return RedirectToPage();
         }

@@ -3,20 +3,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MarksMovies.Models;
-using MarksMovies.Services;
+using MarksMovies.WebServices;
 
 namespace MarksMovies.Pages.Movies
 {
     public class IndexModel : PageModel
     {
-        private readonly MovieIndexService _service;
+        private readonly WebMovieIndexService _service;
 
-        public IndexModel(MovieIndexService service)
+        public IndexModel(WebMovieIndexService Service)
         {
-            _service = service;
+            _service = Service;
         }
 
-        public IList<Movie> Movie { get;set; }
+        public IList<Movie> Movie { get; set; }
 
         [BindProperty(SupportsGet =true)]
         public string SearchString { get; set; }

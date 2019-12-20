@@ -23,13 +23,13 @@ namespace MarksMovies.TMDB
 
         public string backdrop_path { get; set; }
 
-        public IList<TVShowCreatedBy> created_by { get; set; }
+        public IEnumerable<TVShowCreatedBy> created_by { get; set; }
 
-        public IList<int> episode_run_time { get; set; }
+        public IEnumerable<int> episode_run_time { get; set; }
 
         public string first_air_date { get; set; }
 
-        public IList<TVShowGenre> genres { get; set; }
+        public IEnumerable<TVShowGenre> genres { get; set; }
 
         public string homepage { get; set; }
 
@@ -37,7 +37,7 @@ namespace MarksMovies.TMDB
 
         public bool in_production { get; set; }
 
-        public IList<string> languages { get; set; }
+        public IEnumerable<string> languages { get; set; }
 
         public string last_air_date { get; set; }
 
@@ -47,13 +47,13 @@ namespace MarksMovies.TMDB
 
         public TVShowEpisodeToAir next_episode_to_air { get; set; }
 
-        public IList<TVShowNetworks> networks { get; set; }
+        public IEnumerable<TVShowNetworks> networks { get; set; }
 
         public int number_of_episodes { get; set; }
 
         public int number_of_seasons { get; set; }
 
-        public IList<string> origin_country { get; set; }
+        public IEnumerable<string> origin_country { get; set; }
 
         public string original_launguage { get; set; }
 
@@ -65,9 +65,9 @@ namespace MarksMovies.TMDB
 
         public string poster_path { get; set; }
 
-        public IList<ProductionCompanies> production_companies { get; set; }
+        public IEnumerable<ProductionCompanies> production_companies { get; set; }
 
-        public IList<TVShowSeason> seasons { get; set; }
+        public IEnumerable<TVShowSeason> seasons { get; set; }
 
         public string status { get; set; }
 
@@ -162,9 +162,9 @@ namespace MarksMovies.TMDB
             cast = new List<CastMember>();
             crew = new List<CrewMember>();
         }
-        public IList<CastMember> cast { get; set; }
+        public IEnumerable<CastMember> cast { get; set; }
 
-        public IList<CrewMember> crew { get; set; }
+        public IEnumerable<CrewMember> crew { get; set; }
 
         public int id { get; set; }
     }
@@ -178,7 +178,7 @@ namespace MarksMovies.TMDB
 
         public int id { get; set; }
 
-        public IList<TVRating> results { get; set; }
+        public IEnumerable<TVRating> results { get; set; }
     }
 
     public class TVRating

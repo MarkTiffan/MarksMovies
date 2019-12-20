@@ -7,12 +7,15 @@ namespace MarksMovies.Services
 {
     public class MovieIndexService
     {
+
         private readonly IMovieDBAccess _dbAccess;
 
-        public MovieIndexService(IMovieDBAccess dbAccess)
+        public MovieIndexService(IMovieDBAccess DbAccess)
         {
-            _dbAccess = dbAccess;
+            _dbAccess = DbAccess;
         }
+
+
 
         public async Task<IList<Movie>> OnGetAsync(string SearchTitle, GenreType SearchGenre)
         {
