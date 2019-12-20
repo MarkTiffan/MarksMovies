@@ -4,8 +4,10 @@ There are currently 6 projects in this solution:
  - **MarksMovies.RazorPagesUI** -- Front end web UI
  - **MarksMovies.DataModel** --- Core classes for the data model which map to database tables
  - **MarksMovies.DataAccess** --- DB Context, Migrations, and general data access layer
+ - **MarksMovies.API** --- API controller classes to serve as entry to back end
  - **MarksMovies.TMDB** --- The Movie Database API methods and objects
  - **MarksMovies.Services** --- Business logic
+ - **MarksMovies.WebServices** --- Service classes to support Razor Pages front end
  - **MarksMovies.Tests** --- Unit tests
 
 ## Main project is MarksMovies.RazorPagesUI
