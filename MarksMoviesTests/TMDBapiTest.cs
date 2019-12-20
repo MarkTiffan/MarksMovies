@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using MarksMovies.Models;
 using MarksMovies.TMDB;
+using System.Linq;
 
 namespace MarksMoviesTests
 {
@@ -35,8 +36,8 @@ namespace MarksMoviesTests
 
             Assert.IsNotNull(searchmovies);
             Assert.AreEqual(searchmovies.total_results, expectedResultCount);
-            Assert.AreEqual(searchmovies.results.Count, expectedResultCount);
-            Assert.AreEqual(searchmovies.results[0].id, expectedTMDB_ID);
+            Assert.AreEqual(searchmovies.results.Count(), expectedResultCount);
+            Assert.AreEqual(searchmovies.results.FirstOrDefault().id, expectedTMDB_ID);
         }
 
         [TestMethod]
@@ -76,10 +77,10 @@ namespace MarksMoviesTests
             var moviedetails = await tmdbapi.FetchMovieDetailsAsync(tmdb_id);
 
             Assert.IsNotNull(moviedetails);
-            Assert.AreEqual(moviedetails.genres.Count, expectedGenreCount);
+            Assert.AreEqual(moviedetails.genres.ToList().Count, expectedGenreCount);
             Assert.IsNotNull(moviedetails.credits);
             Assert.IsNotNull(moviedetails.credits.cast);
-            Assert.IsTrue(moviedetails.credits.cast.Count > 0);
+            Assert.IsTrue(moviedetails.credits.cast.ToList().Count > 0);
             foreach (var person in moviedetails.credits.cast)
             {
                 if(person.character == expectedName)
@@ -119,8 +120,8 @@ namespace MarksMoviesTests
 
             Assert.IsNotNull(searchTVShows);
             Assert.AreEqual(searchTVShows.total_results, expectedResultCount);
-            Assert.AreEqual(searchTVShows.results.Count, expectedResultCount);
-            Assert.AreEqual(searchTVShows.results[0].id, expectedTMDB_ID);
+            Assert.AreEqual(searchTVShows.results.ToList().Count, expectedResultCount);
+            Assert.AreEqual(searchTVShows.results.ToList().FirstOrDefault().id, expectedTMDB_ID);
         }
 
         [TestMethod]
@@ -162,10 +163,10 @@ namespace MarksMoviesTests
             var TVShowDetails = await tmdbapi.FetchTVShowDetailsAsync(tmdb_id);
 
             Assert.IsNotNull(TVShowDetails);
-            Assert.AreEqual(TVShowDetails.genres.Count, expectedGenreCount);
+            Assert.AreEqual(TVShowDetails.genres.ToList().Count, expectedGenreCount);
             Assert.IsNotNull(TVShowDetails.credits);
             Assert.IsNotNull(TVShowDetails.credits.cast);
-            Assert.IsTrue(TVShowDetails.credits.cast.Count > 0);
+            Assert.IsTrue(TVShowDetails.credits.cast.ToList().Count > 0);
             foreach (var person in TVShowDetails.credits.cast)
             {
                 if (person.character == expectedName)
@@ -177,7 +178,7 @@ namespace MarksMoviesTests
             Assert.IsTrue(GregoryHouseExists);
             Assert.IsNotNull(TVShowDetails.content_ratings);
             Assert.IsNotNull(TVShowDetails.content_ratings.results);
-            Assert.IsTrue(TVShowDetails.content_ratings.results.Count > 0);
+            Assert.IsTrue(TVShowDetails.content_ratings.results.ToList().Count > 0);
             foreach(var country in TVShowDetails.content_ratings.results)
             {
                 if(country.iso_3166_1 == "US")

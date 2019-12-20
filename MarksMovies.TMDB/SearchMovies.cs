@@ -16,11 +16,15 @@ namespace MarksMovies.TMDB
 
         public int total_results { get; set; }
 
-        public IList<SearchMoviesResult> results { get; set; }
+        public IEnumerable<SearchMoviesResult> results { get; set; }
     }
 
     public class SearchMoviesResult
     {
+        public SearchMoviesResult()
+        {
+            genre_ids = new List<GenreType>();
+        }
         public string poster_path { get; set; }
 
         public bool adult { get; set; }
@@ -29,7 +33,7 @@ namespace MarksMovies.TMDB
 
         public string release_date { get; set; }
 
-        public IList<GenreType> genre_ids { get; set; }
+        public IEnumerable<GenreType> genre_ids { get; set; }
 
         public int id { get; set; }
 

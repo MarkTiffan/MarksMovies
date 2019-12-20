@@ -15,98 +15,89 @@ namespace MarksMovies.Services
     {
         private readonly IMovieDBAccess _dbAccess;
 
-        public ExportService(IMovieDBAccess dbAccess)
+        public ExportService(IMovieDBAccess DbAccess)
         {
-            _dbAccess = dbAccess;
+            _dbAccess = DbAccess;
         }
 
 
-        public IQueryable<Movie> GetMovies()
+        public async Task<IList<Movie>> GetMoviesAsync(string Title = "", GenreType Genre = 0)
         {
-            IQueryable<Movie> Movies = _dbAccess.GetMovieList();
-            if (Movies == null)
+            return await _dbAccess.GetMovieListAsync(Title, Genre);
+        }
+
+        public async Task<string> GetMoviesJsonAsync()
+        {
+            IList<Movie> movies = await _dbAccess.GetMovieListAsync();
+            if (movies == null)
                 return null;
-            else
-                return Movies;
+
+            return JArray.Parse(JsonConvert.SerializeObject(movies)).ToString();
         }
 
-        public string GetMoviesJson()
+
+        //public async Task<Movie> GetMovieAsync(int ID)
+        //{
+        //    return await _dbAccess.GetMovieAsync(ID);
+        //}
+
+        private async Task<DataTable> GetMoviesDataTableAsync()
         {
-            IQueryable<Movie> Movies = _dbAccess.GetMovieList();
-            if (Movies == null)
+            IList<Movie> movies = await _dbAccess.GetMovieListAsync();
+            if (movies == null)
                 return null;
-            else
-                return JArray.Parse(JsonConvert.SerializeObject(Movies)).ToString(); ;
-        }
 
-
-        public async Task<Movie> GetMovie(int ID)
-        {
-            var Movie = await _dbAccess.GetMovieAsync(ID);
-            if (Movie == null)
-                return null;
-            else
-                return Movie;
-        }
-
-        public DataTable GetMoviesDataTable()
-        {
-            IList<Movie> Movies = _dbAccess.GetMovieList().ToList();
-
-            using (DataTable DT = new DataTable())
+            using (DataTable dt = new DataTable())
             {
+                dt.Columns.Add("Title");
+                dt.Columns.Add("Year");
+                dt.Columns.Add("Rating");
+                dt.Columns.Add("Genres");
+                dt.Columns.Add("TMDB ID");
+                dt.Columns.Add("IMDB ID");
+                dt.Columns.Add("Media Type");
+                dt.Columns.Add("Movie Or TV Show?");
+                dt.Columns.Add("Season");
+                dt.Columns.Add("Rank");
+                dt.Columns.Add("Comments");
 
-                if (Movies != null)
+                foreach (var movie in movies)
                 {
-                    DT.Columns.Add("Title");
-                    DT.Columns.Add("Year");
-                    DT.Columns.Add("Rating");
-                    DT.Columns.Add("Genres");
-                    DT.Columns.Add("TMDB ID");
-                    DT.Columns.Add("IMDB ID");
-                    DT.Columns.Add("Media Type");
-                    DT.Columns.Add("Movie Or TV Show?");
-                    DT.Columns.Add("Season");
-                    DT.Columns.Add("Rank");
-                    DT.Columns.Add("Comments");
-
-                    for (var row = 0; row < Movies.Count; row++)
-                    {
-                        DT.Rows.Add(
-                                Movies[row].Title,
-                                Movies[row].Year,
-                                Movies[row].Rating,
-                                Movies[row].GetGenresAsString(),
-                                Movies[row].TMDB_ID,
-                                Movies[row].IMDB_ID,
-                                Movies[row].MediaType,
-                                Movies[row].MovieOrTVShow,
-                                Movies[row].Season,
-                                Movies[row].Rank,
-                                Movies[row].Comments
-                            );
-                    }
-
-                    return DT;
+                    dt.Rows.Add(
+                            movie.Title,
+                            movie.Year,
+                            movie.Rating,
+                            movie.GetGenresAsString(),
+                            movie.TMDB_ID,
+                            movie.IMDB_ID,
+                            movie.MediaType,
+                            movie.MovieOrTVShow,
+                            movie.Season,
+                            movie.Rank,
+                            movie.Comments
+                        );
                 }
-                else
-                    return null;
+
+                return dt;
             }
         }
 
-
-        public byte[] GetExcelFile()
+        
+        public async Task<byte[]> GetExcelFileAsync()
         {
             using (var package = new ExcelPackage())
             {
                 ExcelWorksheet sheet = package.Workbook.Worksheets.Add("Movies");
 
-                using (DataTable DT = GetMoviesDataTable())
+                using (DataTable dt = await GetMoviesDataTableAsync())
                 {
+                    // add rows
+                    if (dt?.Rows.Count <= 0)
+                        return null;
 
                     // add headers
                     int col = 0;
-                    foreach (DataColumn column in DT.Columns)
+                    foreach (DataColumn column in dt.Columns)
                     {
                         sheet.Cells[1, ++col].Value = column.ColumnName;
                         sheet.Cells[1, col].Style.Font.Bold = true;
@@ -114,38 +105,34 @@ namespace MarksMovies.Services
                         sheet.Cells[1, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     }
 
-                    // add rows
-                    if (DT.Rows.Count <= 0)
-                        return null;
-                    else
+
+
+                    int row = 1;
+                    for (int eachRow = 0; eachRow < dt.Rows.Count;)
                     {
-                        int row = 1;
-                        for (int eachRow = 0; eachRow < DT.Rows.Count;)
+
+                        for (int eachColumn = 1; eachColumn <= col; eachColumn++)
                         {
+                            var eachRowObject = sheet.Cells[row + 1, eachColumn];
+                            eachRowObject.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            eachRowObject.Value = dt.Rows[eachRow][(eachColumn - 1)].ToString();
 
-                            for (int eachColumn = 1; eachColumn <= col; eachColumn++)
-                            {
-                                var eachRowObject = sheet.Cells[row + 1, eachColumn];
-                                eachRowObject.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                eachRowObject.Value = DT.Rows[eachRow][(eachColumn - 1)].ToString();
+                            eachRowObject.Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
-                                eachRowObject.Style.Border.BorderAround(ExcelBorderStyle.Thin);
-
-                                // add alternate row cell shading
-                                if (eachRow % 2 == 0)
-                                    eachRowObject.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#e0e0e0"));
-                                else
-                                    eachRowObject.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#ffffff"));
-                            }
-                            eachRow++;
-                            row++;
-
+                            // add alternate row cell shading
+                            if (eachRow % 2 == 0)
+                                eachRowObject.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#e0e0e0"));
+                            else
+                                eachRowObject.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#ffffff"));
                         }
+                        eachRow++;
+                        row++;
 
                     }
-                    sheet.Cells.AutoFitColumns();
-                    return package.GetAsByteArray();
 
+                    sheet.Cells.AutoFitColumns();
+
+                    return package.GetAsByteArray();
                 }
             }
         }

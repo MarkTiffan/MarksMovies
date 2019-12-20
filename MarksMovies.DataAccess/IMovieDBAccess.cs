@@ -15,20 +15,22 @@ namespace MarksMovies.DataAccess
 
         Task<int> SaveChangesAsync();
 
-        Task<Movie> GetMovieAsync(int? id);
+        Task<Movie> GetMovieAsync(int? ID);
 
-        Task<int> DeleteMovieAsync(int? id);
+        Task<int> DeleteMovieAsync(int? ID);
 
-        Task<int> SaveMovieAsync(Movie Movie, List<GenreType> SelectedGenres);
+        Task<int> SaveMovieAsync(Movie Movie, IList<GenreType> SelectedGenres);
 
-        bool MovieExists(int id);
+        bool MovieExists(int ID);
 
         Task<IList<Movie>> GetMovieListAsync(string SearchTitle, GenreType SearchGenre);
+
+        Task<IList<Movie>> GetMovieListAsync();
 
         IList<Movie> GetRankedMovies();
 
         void Update(Movie Movie);
 
-        IQueryable<Movie> GetMovieList();
+
     }
 }

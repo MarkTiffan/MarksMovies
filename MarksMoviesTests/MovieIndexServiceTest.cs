@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,13 +18,13 @@ namespace MarksMoviesTests
         public async Task OnGetAsync_VerifyNoQueryStringReturnsMovieList()
         {
             IList<Movie> Movies;
-            context.Movie.Add(CommonTestFunctions.GetSampleMovie(true));
-            context.SaveChanges();
+            Context.Movie.Add(CommonTestFunctions.GetSampleMovie(true));
+            Context.SaveChanges();
 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var context = new MarksMoviesContext(Options))
             {
-                MovieDBAccess db = new MovieDBAccess(newcontext);
-                var service = new MovieIndexService(db);
+                var DbAccess = new MovieDBAccess(context);
+                var service = new MovieIndexService(DbAccess);
 
                 Movies = await service.OnGetAsync("", 0);
 
@@ -39,14 +40,14 @@ namespace MarksMoviesTests
             IList<Movie> Movies;
             string expectedTitle = "Avenger's Endgame";
             string SearchString = "avenger";
-            context.Movie.Add(CommonTestFunctions.GetSampleMovie(true));
-            context.Movie.Add(CommonTestFunctions.GetSampleTVShow(true, 2));
-            context.SaveChanges();
+            Context.Movie.Add(CommonTestFunctions.GetSampleMovie(true));
+            Context.Movie.Add(CommonTestFunctions.GetSampleTVShow(true, 2));
+            Context.SaveChanges();
 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var context = new MarksMoviesContext(Options))
             {
-                MovieDBAccess db = new MovieDBAccess(newcontext);
-                var service = new MovieIndexService(db);
+                var DbAccess = new MovieDBAccess(context);
+                var service = new MovieIndexService(DbAccess);
 
                 Movies = await service.OnGetAsync(SearchString, 0);
 
@@ -63,14 +64,14 @@ namespace MarksMoviesTests
             IList<Movie> Movies;
             string expectedTitle = "House";
             GenreType selection = GenreType.Drama;
-            context.Movie.Add(CommonTestFunctions.GetSampleMovie(true));
-            context.Movie.Add(CommonTestFunctions.GetSampleTVShow(true, 2));
-            context.SaveChanges();
+            Context.Movie.Add(CommonTestFunctions.GetSampleMovie(true));
+            Context.Movie.Add(CommonTestFunctions.GetSampleTVShow(true, 2));
+            Context.SaveChanges();
 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var context = new MarksMoviesContext(Options))
             {
-                MovieDBAccess db = new MovieDBAccess(newcontext);
-                var service = new MovieIndexService(db);
+                var DbAccess = new MovieDBAccess(context);
+                var service = new MovieIndexService(DbAccess);
 
                 Movies = await service.OnGetAsync("", selection);
 

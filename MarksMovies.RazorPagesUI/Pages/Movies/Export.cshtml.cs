@@ -1,17 +1,18 @@
-﻿using MarksMovies.Services;
+﻿using MarksMovies.WebServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Threading.Tasks;
 
 namespace MarksMovies.Pages.Movies
 {
     public class ExportModel : PageModel
     {
 
-        private readonly ExportService _service;
+        private readonly WebExportService _service;
 
-        public ExportModel(ExportService service)
+        public ExportModel(WebExportService Service)
         {
-            _service = service;
+            _service = Service;
         }
 
         public enum ExportFileType
@@ -32,7 +33,7 @@ namespace MarksMovies.Pages.Movies
 
         }
 
-        public FileResult OnPostDownload()
+        public async Task<FileResult> OnPostDownloadAsync()
         {
             string filename;
             
@@ -43,7 +44,7 @@ namespace MarksMovies.Pages.Movies
                         if (!string.IsNullOrEmpty(FileName))
                             filename = FileName;
 
-                        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(_service.GetMoviesJson());
+                        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(await _service.GetMoviesJsonAsync());
                         return File(bytes, "application/json", filename);
                     }
                 case ExportFileType.Excel:
@@ -52,7 +53,7 @@ namespace MarksMovies.Pages.Movies
                         if (!string.IsNullOrEmpty(FileName))
                             filename = FileName;
 
-                        return File(_service.GetExcelFile(), 
+                        return File(await _service.GetExcelFileAsync(), 
                                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                                     filename);
                     }

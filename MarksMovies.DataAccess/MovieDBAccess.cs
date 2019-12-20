@@ -11,9 +11,9 @@ namespace MarksMovies.DataAccess
     {
         private readonly IMarksMoviesContext _context;
 
-        public MovieDBAccess(IMarksMoviesContext context)
+        public MovieDBAccess(IMarksMoviesContext Context)
         {
-            _context = context;
+            _context = Context;
         }
 
         public const int DELETE_FAIL = 0;
@@ -24,34 +24,29 @@ namespace MarksMovies.DataAccess
             _context.Movie.Add(Movie);
         }
 
-        public async Task<int> DeleteMovieAsync(int? id)
+        public async Task<int> DeleteMovieAsync(int? ID)
         {
-            Movie Movie = await GetMovieAsync(id);
+            Movie Movie = await GetMovieAsync(ID);
 
             if (Movie == null)
-            {
                 return DELETE_FAIL;
-            }
-            else
+            
+            foreach (var genre in Movie.Genres)
             {
-                if (Movie.Genres != null)
-                {
-                    foreach (var genre in Movie.Genres)
-                    {
-                        _context.Remove(genre);
-                    }
-                }
-                _context.Movie.Remove(Movie);
-                await _context.SaveChangesAsync();
-
-                return DELETE_OK;
+                _context.Remove(genre);
             }
+            
+            _context.Movie.Remove(Movie);
+            await _context.SaveChangesAsync();
+
+            return DELETE_OK;
+            
         }
 
-        public async Task<Movie> GetMovieAsync(int? id)
+        public async Task<Movie> GetMovieAsync(int? ID)
         {
-            if (id != null && id > 0)
-                return await _context.Movie.Include(g => g.Genres).FirstOrDefaultAsync(m => m.ID == id);
+            if (ID != null && ID > 0)
+                return await _context.Movie.Include(g => g.Genres).FirstOrDefaultAsync(m => m.ID == ID);
             else
                 return null;
         }
@@ -72,49 +67,43 @@ namespace MarksMovies.DataAccess
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> SaveMovieAsync(Movie Movie, List<GenreType> SelectedGenres = null)
+        public async Task<int> SaveMovieAsync(Movie Movie, IList<GenreType> SelectedGenres = null)
         {
-            if (Movie != null)
-            {
-                var movie = await GetMovieAsync(Movie.ID);
-
-                _context.Entry(movie).CurrentValues.SetValues(Movie);
-
-                if (SelectedGenres != null)
-                {
-                    if (movie.Genres.Count > 0)
-                        movie.Genres.Clear();
-
-                    if (SelectedGenres.Count > 0)
-                    {
-                        foreach (var moviegenre in SelectedGenres)
-                        {
-                            movie.Genres.Add(new Genre(moviegenre));
-                        }
-                    }
-                }
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                    return 1;
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (MovieExists(Movie.ID))
-                        throw;
-                }
+            if (Movie == null)
                 return 0;
-            }
-            else
+
+            var movie = await GetMovieAsync(Movie.ID);
+
+            _context.Entry(movie).CurrentValues.SetValues(Movie);
+
+            if (SelectedGenres != null)
             {
-                return 0;
+                if (movie.Genres.Count() > 0)
+                    movie.Genres.Clear();
+
+                foreach (var moviegenre in SelectedGenres)
+                {
+                    movie.Genres.Add(new Genre(moviegenre));
+                }          
             }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return 1;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (MovieExists(Movie.ID))
+                    throw;
+            }
+            return 0;
+
         }
 
-        public bool MovieExists(int id)
+        public bool MovieExists(int ID)
         {
-            return _context.Movie.Any(e => e.ID == id);
+            return _context.Movie.Any(e => e.ID == ID);
         }
 
         public async Task<IList<Movie>> GetMovieListAsync(string SearchTitle, GenreType SearchGenre)
@@ -159,11 +148,9 @@ namespace MarksMovies.DataAccess
         }
 
 
-        public IQueryable<Movie> GetMovieList()
+        public async Task<IList<Movie>> GetMovieListAsync()
         {
-            return (from m in _context.Movie
-                    orderby m.Title, m.Season
-                    select m).Include("Genres");
+            return await GetMovieListAsync("", 0);
         }
     }
 }

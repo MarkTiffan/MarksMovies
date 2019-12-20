@@ -10,53 +10,6 @@
     <script src="~/lib/jqueryui/jquery-ui.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            @*$('#MovieList tbody').sortable().disableSelection();
-            $('#sortable').sortable({
-                update: function (event, ui) {
-                    var itemIds = "";
-                    $("#sortable").find(".movieSingleInline").each(function () {
-                        var itemId = $(this).attr("data-movieID");
-                        itemIds = itemIds + itemId + ",";
-                    })
-                    $.ajax({
-                        url: '@Url.Action("UpdateRanks","RankMovies")',
-                        data: { itemIds: itemIds },
-                        type: 'POST',
-                        success: function (data) {
-                            
-                        },
-                        error: function (xhr, status, error) {
-
-                        }
-                    })
-                }
-            });
-
-            $(function () {
-                $("#MovieList").sortable();
-                $("#MovieList").disableSelection();
-                $('#UpdateButton').on('click', function () {
-                    var a = $("#MovieList").sortable("serialize", { key: "Movie" });
-                    console.log(a);
-                    $.ajax({
-                        data: {
-                            "itemIds": a
-                        },
-                        type: 'POST',
-                        url: '/Movies/RankMovies',
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader("XSRF-TOKEN",
-                                $('input:hidden[name="__RequestVerificationToken"]').val());
-                        },
-                        success: function (result) {
-                            alert(result);
-                        },
-                        error: function (status, ex) {
-                            alert("Error Code: Status: " + status + " Ex: " + ex);
-                        }
-                    });
-                });
-            });*@
             $(function () {
                 $("#MovieList").sortable();
                 $("#MovieList").disableSelection();

@@ -5,9 +5,13 @@ namespace MarksMovies.TMDB
 {
     public class SearchTV
     {
+        public SearchTV()
+        {
+            results = new List<SearchTVResult>();
+        }
         public int page { get; set; }
 
-        public IList<SearchTVResult> results { get; set; }
+        public IEnumerable<SearchTVResult> results { get; set; }
 
         public int total_results { get; set; }
 
@@ -17,6 +21,11 @@ namespace MarksMovies.TMDB
 
     public class SearchTVResult
     {
+        public SearchTVResult()
+        {
+            origin_country = new List<string>();
+            genre_ids = new List<GenreType>();
+        }
         public string poster_path { get; set; }
 
         public float popularity { get; set; }
@@ -31,9 +40,9 @@ namespace MarksMovies.TMDB
 
         public string first_air_date { get; set; }
 
-        public IList<string> origin_country { get; set; }
+        public IEnumerable<string> origin_country { get; set; }
 
-        public IList<GenreType> genre_ids { get; set; }
+        public IEnumerable<GenreType> genre_ids { get; set; }
 
         public string original_language { get; set; }
 

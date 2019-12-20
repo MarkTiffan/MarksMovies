@@ -36,19 +36,7 @@
                 <dd class="col-sm-6">
                     @if (Model.Movie.Genres != null)
                     {
-                        @for (int i = 0; i < Model.Movie.Genres.Count(); i++)
-                        {
-
-                            @if (i < Model.Movie.Genres.Count() - 1)
-                            {
-                                <span>@Html.DisplayFor(modelItem => Model.Movie.Genres[i].genre)</span>
-                                <span>, </span>
-                            }
-                            else
-                            {
-                                <span>@Html.DisplayFor(modelItem => Model.Movie.Genres[i].genre)</span>
-                            }
-                        }
+                        <span>@Model.Movie.GetGenresAsString()</span>
                     }
 
                 </dd>
@@ -122,47 +110,30 @@
                 var count = 0;
                 if (Model.MovieDetails != null)
                 {
-                    if (Model.MovieDetails.credits.cast.Count < 5)
+                    if (Model.MovieDetails.credits.cast.Count() < 5)
                     {
-                        count = Model.MovieDetails.credits.cast.Count;
+                        count = Model.MovieDetails.credits.cast.Count();
                     }
                     else
                     {
                         count = 5;
                     }
-                    for (var i = 0; i < count; i++)
+                    foreach (var castMember in Model.MovieDetails.credits.cast)
                     {
                         <dl class="row">
                             <dt class="col-sm-2">
-                                @Model.MovieDetails.credits.cast[i].name
+                                @castMember.name
                             </dt>
                             <dd class="col-auto">
-                                @Model.MovieDetails.credits.cast[i].character
+                                @castMember.character
                             </dd>
                         </dl>
-                    }
-                }
+                        count -= 1;
+                        if (count == 0)
+                        {
+                            break;
+                        }
 
-                if (Model.TVDetails != null)
-                {
-                    if (Model.TVDetails.credits.cast.Count < 5)
-                    {
-                        count = Model.TVDetails.credits.cast.Count;
-                    }
-                    else
-                    {
-                        count = 5;
-                    }
-                    for (var i = 0; i < count; i++)
-                    {
-                        <dl class="row">
-                            <dt class="col-sm-2">
-                                @Model.TVDetails.credits.cast[i].name
-                            </dt>
-                            <dd class="col-auto">
-                                @Model.TVDetails.credits.cast[i].character
-                            </dd>
-                        </dl>
                     }
                 }
             }

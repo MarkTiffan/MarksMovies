@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,11 +25,11 @@ namespace MarksMoviesTests
             int? id = null;
             Movie movie;
 
-            var service = new DetailsService(dbAccess, mockTMDBapi.Object);
+            var service = new DetailsService(DbAccess, mockTMDBapi.Object);
 
             movie = await service.GetMovieAsync(id);
             Assert.IsNull(movie);
-            Assert.AreEqual(0, await context.Movie.CountAsync<Movie>());
+            Assert.AreEqual(0, await Context.Movie.CountAsync<Movie>());
         }
 
         [TestMethod]
@@ -38,11 +39,11 @@ namespace MarksMoviesTests
             int? id = 0;
             Movie movie;
 
-            var service = new DetailsService(dbAccess, mockTMDBapi.Object);
+            var service = new DetailsService(DbAccess, mockTMDBapi.Object);
 
             movie = await service.GetMovieAsync(id);
             Assert.IsNull(movie);
-            Assert.AreEqual(0, await context.Movie.CountAsync<Movie>());
+            Assert.AreEqual(0, await Context.Movie.CountAsync<Movie>());
         }
 
         [TestMethod]
@@ -52,11 +53,11 @@ namespace MarksMoviesTests
             int? id = -1;
             Movie movie;
 
-            var service = new DetailsService(dbAccess, mockTMDBapi.Object);
+            var service = new DetailsService(DbAccess, mockTMDBapi.Object);
 
             movie = await service.GetMovieAsync(id);
             Assert.IsNull(movie);
-            Assert.AreEqual(0, await context.Movie.CountAsync<Movie>());
+            Assert.AreEqual(0, await Context.Movie.CountAsync<Movie>());
         }
 
         [TestMethod]
@@ -67,10 +68,10 @@ namespace MarksMoviesTests
             Movie movie;
             Movie newMovie = CommonTestFunctions.GetSampleMovie(true);
 
-            context.Movie.Add(newMovie);
-            context.SaveChanges();
+            Context.Movie.Add(newMovie);
+            Context.SaveChanges();
 
-            using (var newcontext = new MarksMoviesContext(options))
+            using (var newcontext = new MarksMoviesContext(Options))
             {
                 MovieDBAccess db = new MovieDBAccess(newcontext);
                 var service = new DetailsService(db, mockTMDBapi.Object);
@@ -78,7 +79,7 @@ namespace MarksMoviesTests
                 movie = await service.GetMovieAsync(id);
 
                 Assert.IsNotNull(movie);
-                Assert.AreEqual(1, await context.Movie.CountAsync<Movie>());
+                Assert.AreEqual(1, await Context.Movie.CountAsync<Movie>());
                 Assert.AreEqual(1, movie.ID);
                 Assert.AreEqual("Avenger's Endgame", movie.Title);
                 Assert.AreEqual(2019, movie.Year);
@@ -95,7 +96,7 @@ namespace MarksMoviesTests
             var mockTMDBapi = new Mock<ITMDBapi>();
             int tmdb_id = 0;
 
-            var service = new DetailsService(dbAccess, mockTMDBapi.Object);
+            var service = new DetailsService(DbAccess, mockTMDBapi.Object);
 
             var moviedetails = await service.GetMovieDetailsAsync(tmdb_id);
             Assert.IsNull(moviedetails);
@@ -112,15 +113,15 @@ namespace MarksMoviesTests
             var TonyStarkExists = false;
             var expectedName = "Tony Stark / Iron Man";
 
-            var service = new DetailsService(dbAccess, TMDBapi);
+            var service = new DetailsService(DbAccess, TMDBapi);
 
             var moviedetails = await service.GetMovieDetailsAsync(tmdb_id);
 
             Assert.IsNotNull(moviedetails);
-            Assert.AreEqual(moviedetails.genres.Count, expectedGenreCount);
+            Assert.AreEqual(moviedetails.genres.ToList().Count, expectedGenreCount);
             Assert.IsNotNull(moviedetails.credits);
             Assert.IsNotNull(moviedetails.credits.cast);
-            Assert.IsTrue(moviedetails.credits.cast.Count > 0);
+            Assert.IsTrue(moviedetails.credits.cast.ToList().Count > 0);
             foreach (var person in moviedetails.credits.cast)
             {
                 if (person.character == expectedName)
@@ -139,7 +140,7 @@ namespace MarksMoviesTests
             var mockTMDBapi = new Mock<ITMDBapi>();
             int tmdb_id = 0;
 
-            var service = new DetailsService(dbAccess, mockTMDBapi.Object);
+            var service = new DetailsService(DbAccess, mockTMDBapi.Object);
 
             var TVShowDetails = await service.GetTVSHowDetailsAsync(tmdb_id);
             Assert.IsNull(TVShowDetails);
@@ -157,15 +158,15 @@ namespace MarksMoviesTests
             var GregoryHouseExists = false;
             var expectedName = "Gregory House";
 
-            var service = new DetailsService(dbAccess, TMDBapi);
+            var service = new DetailsService(DbAccess, TMDBapi);
 
             var TVShowDetails = await service.GetTVSHowDetailsAsync(tmdb_id);
 
             Assert.IsNotNull(TVShowDetails);
-            Assert.AreEqual(TVShowDetails.genres.Count, expectedGenreCount);
+            Assert.AreEqual(TVShowDetails.genres.ToList().Count, expectedGenreCount);
             Assert.IsNotNull(TVShowDetails.credits);
             Assert.IsNotNull(TVShowDetails.credits.cast);
-            Assert.IsTrue(TVShowDetails.credits.cast.Count > 0);
+            Assert.IsTrue(TVShowDetails.credits.cast.ToList().Count > 0);
             foreach (var person in TVShowDetails.credits.cast)
             {
                 if (person.character == expectedName)

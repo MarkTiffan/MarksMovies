@@ -2,20 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using MarksMovies.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MarksMovies.Services;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using MarksMovies.TMDB;
+using MarksMovies.WebServices;
 
 namespace MarksMovies.Pages.Movies
 {
     public class CreateModel : PageModel
     {
-        private CreateService _service { get; set; }
+        private WebCreateService _service { get; set; }
 
-        public CreateModel(CreateService service)
+        public CreateModel(WebCreateService Service)
         {
-            _service = service;
+            _service = Service;
             Movie = new Movie();
             SearchMovies = new SearchMovies();
             MovieOrTVShowSelection = MovieOrTVShow.Movie;
@@ -28,7 +28,7 @@ namespace MarksMovies.Pages.Movies
         public virtual Movie Movie { get; set; }
 
         [BindProperty]
-        public virtual List<GenreType> SelectedGenres { get; set; }
+        public virtual IList<GenreType> SelectedGenres { get; set; }
 
         public virtual SearchMovies SearchMovies { get; set; }
 
@@ -52,6 +52,7 @@ namespace MarksMovies.Pages.Movies
                 return Page();
             }
 
+            Movie.MovieOrTVShow = MovieOrTVShowSelection;
             var MovieID = await _service.CreateAsync(Movie, SelectedGenres);
 
 
@@ -68,7 +69,7 @@ namespace MarksMovies.Pages.Movies
                 return Page();
             }
 
-            if (Movie.Title != "")
+            if (Movie.Title != string.Empty)
                 if(MovieOrTVShowSelection == MovieOrTVShow.Movie)
                     SearchMovies = await _service.FetchMovieAsync(Movie.Title);
                 else if(MovieOrTVShowSelection == MovieOrTVShow.TV)
@@ -96,23 +97,16 @@ namespace MarksMovies.Pages.Movies
                     SelectedGenres.Clear();
                 }
 
-
                 if(MovieOrTVShowSelection == MovieOrTVShow.Movie)
-                    Movie = await _service.ImportMovieAsync(TMDB_ID, Movie.Title);
+                    Movie = await _service.ImportMovieAsync(TMDB_ID, Movie.Title, Movie);
                 else if(MovieOrTVShowSelection == MovieOrTVShow.TV)
-                    Movie = await _service.ImportTVShowAsync(TMDB_ID, Movie.Title);
+                    Movie = await _service.ImportTVShowAsync(TMDB_ID, Movie.Title, Movie);
 
-                if (Movie != null)
+                if (Movie?.Genres?.Count > 0)
                 {
-                    if (Movie.Genres != null)
+                    foreach (var g in Movie.Genres)
                     {
-                        if (Movie.Genres.Count > 0)
-                        {
-                            foreach (var g in Movie.Genres)
-                            {
-                                SelectedGenres.Add(g.genre);
-                            }
-                        }
+                        SelectedGenres.Add(g.genre);
                     }
                 }
             }

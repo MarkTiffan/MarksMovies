@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarksMovies.TMDB", "MarksMo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarksMovies.Tests", "MarksMoviesTests\MarksMovies.Tests.csproj", "{CC6B2534-12B1-43D1-A86A-43CE89BBD469}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarksMovies.API", "MarksMovies.API\MarksMovies.API.csproj", "{B6E24A42-E5B6-42C8-BA4A-72B5C48AC082}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarksMovies.WebServices", "MarksMovies.WebServices\MarksMovies.WebServices.csproj", "{5798D18F-E1FB-427D-8294-D61E8AFA0DA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{CC6B2534-12B1-43D1-A86A-43CE89BBD469}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC6B2534-12B1-43D1-A86A-43CE89BBD469}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC6B2534-12B1-43D1-A86A-43CE89BBD469}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6E24A42-E5B6-42C8-BA4A-72B5C48AC082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6E24A42-E5B6-42C8-BA4A-72B5C48AC082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6E24A42-E5B6-42C8-BA4A-72B5C48AC082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6E24A42-E5B6-42C8-BA4A-72B5C48AC082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5798D18F-E1FB-427D-8294-D61E8AFA0DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5798D18F-E1FB-427D-8294-D61E8AFA0DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5798D18F-E1FB-427D-8294-D61E8AFA0DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5798D18F-E1FB-427D-8294-D61E8AFA0DA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
