@@ -1,0 +1,127 @@
+<h1>Create</h1>
+
+<h4>Media</h4>
+<hr />
+
+<div class="container-fluid">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-3">                
+                <div class="form-group">
+                    <label for="Title" class="control-label">Title: </label>
+                    <input [(ngModel)]="media.title" class="form-control" id="Title" name="Title" />                    
+                </div>
+                <div class="form-group">
+                    <label for="MovieOrTVShowSelection" class="control-label">Movie or TV Show?: </label>
+                    <select [(ngModel)]="MovieOrTVShowSelection"  class="form-control" id="MovieOrTVShowSelection" name="MovieOrTVShowSelection">
+                        <ng-container *ngFor="let val of mediaOptions | EnumSelectPipe">
+                            <option [ngValue]="val.key">{{ val.value }}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="SelectedGenres" class="control-label">Genres: </label>
+                    <select multiple="true" [(ngModel)]="SelectedGenres"  class="form-control"
+                             id="SelectedGenres" name="SelectedGenres" [compareWith]="compareWithFn">
+                        <ng-container *ngFor="let val of genreList | EnumSelectPipe">
+                            <option *ngIf="val.value != 'All'" [ngValue]="val.value">{{ val.value }}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="RatingSelection" class="control-label">Rating: </label>
+                    <select [(ngModel)]="RatingSelection" class="form-control" id="RatingSelection" name="RatingSelection">
+                        <ng-container *ngFor="let val of ratingOptions | EnumSelectPipe">
+                            <option [ngValue]="val.value">{{ val.value }}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="SelectedDiscType" class="control-label"> Disc Type: </label>
+                    <select [(ngModel)]="SelectedDiscType" class="form-control" id="SelectedDiscType" name="SelectedDiscType">
+                        <ng-container *ngFor="let val of discOptions | EnumSelectPipe">
+                            <option  [ngValue]="val.value">{{ val.value }}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="IMDB_ID" class="control-label">IMDB ID: </label>
+                    <input [(ngModel)]="media.imdB_id" class="form-control" id="IMDB_ID" name="IMDB_ID" />
+                </div>
+                <div class="form-group">
+                    <label for="Year" class="control-label">Year: </label>
+                    <input [(ngModel)]="media.year" class="form-control" id="Year" name="Year" />
+                </div>
+                <div class="form-group">
+                    <label for="Season" class="control-label">Season: </label>
+                    <input [(ngModel)]="media.season" class="form-control" id="Season" name="Season" />
+                </div>
+                <div class="form-group">
+                    <label for="Comments" class="control-label">Comments: </label>
+                    <textarea rows="8" cols="40" [(ngModel)]="media.comments" class="form-control" id="Comments" name="Comments"></textarea>
+                </div>
+                <div class="form-group">
+                    <button (click)="onCreate()" class="btn btn-primary">Create</button>
+                </div>
+
+            </div>
+            <div class="col">
+                <div>
+                    <span><button (click)="onFetch()" class="btn btn-primary">Fetch TMDB Data</button></span>
+                </div>
+                <div class="container-fluid" *ngIf="SearchMovies">
+
+                    <div *ngIf="SearchMovies.total_results > 0">
+                        <div class="row" *ngFor="let result of SearchMovies.results">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ result.title }}
+                                        </h5>
+                                        <h6 class="card-subtitle">
+                                            {{ result.release_date }}
+                                        </h6>
+                                        <p class="card-text">
+                                            {{ result.overview }}
+                                        </p>
+                                        <button (click)="onImport(result.id)" class="btn btn-primary">Import</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid" *ngIf="SearchTV">
+                    <div *ngIf="SearchTV.total_results > 0">
+
+                        <div class="row" *ngFor="let result of SearchTV.results">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ result.name }}
+                                        </h5>
+                                        <h6 class="card-subtitle">
+                                            {{ result.first_air_date }}
+                                        </h6>
+                                        <p class="card-text">
+                                            {{ result.overview }}
+                                        </p>
+
+
+                                        <button (click)="onImport(result.id)" class="btn btn-primary">Import</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a [routerLink]="'/media'"> Back to List</a>
+</div>

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MarksMovies.API
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
@@ -20,6 +23,15 @@ namespace MarksMovies.API
         private readonly DetailsService _detailService;
         private readonly RankMoviesService _rankMoviesService;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="expService"></param>
+        /// <param name="editService"></param>
+        /// <param name="deleteService"></param>
+        /// <param name="createService"></param>
+        /// <param name="detailService"></param>
+        /// <param name="rankMoviesService"></param>
         public MediaController(ExportService expService,
                                 EditService editService,
                                 DeleteService deleteService,

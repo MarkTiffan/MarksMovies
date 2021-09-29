@@ -1,0 +1,110 @@
+<div class="container-fluid">
+    <h1>Details</h1>
+    <h4>Media</h4>
+    <hr />
+    <div class="row">
+        <div class="col">
+            <span><a [routerLink]="'/media/edit/' + media?.id">Edit</a> | </span>
+            <span><a [routerLink]="'/media'" fragment="{{media?.id}}"> Back to List</a></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg">
+
+            <dl class="row">
+                <dt class="col-sm-6">
+                    Title
+                </dt>
+                <dd class="col-sm-6">
+                    {{ media?.title }}
+                </dd>
+                <dt class="col-sm-6">
+                    Genres
+                </dt>
+                <dd class="col-sm-6">
+                    {{ CF.GetGenresAsString(media?.genres) }}
+                </dd>
+                <dt class="col-sm-6">
+                    Year
+                </dt>
+                <dd class="col-sm-6">
+                    {{ media?.year }}
+                </dd>
+                <dt class="col-sm-6">
+                    Rating
+                </dt>
+                <dd class="col-sm-6">
+                    {{ media?.rating }}
+                </dd>
+                <dt class="col-sm-6">
+                    Media Type
+                </dt>
+                <dd class="col-sm-6">
+                    {{ media?.mediaType }}
+                </dd>
+                <dt class="col-sm-6">
+                    IMDB ID
+                </dt>
+                <dd class="col-sm-6">
+                    {{ media?.imdB_ID }}
+                </dd>
+                <dt class="col-sm-6">
+                    Rank
+                </dt>
+                <dd class="col-sm-6">
+                    {{ media?.rank }}
+                </dd>
+                <dt class="col-sm-6">
+                    Comments
+                </dt>
+                <dd class="col-sm-6">
+                    {{ media?.comments }}
+                </dd>
+            </dl>
+
+        </div>
+        <div class="col-lg">
+            <div class="card">
+                <h5 class="card-header">
+                    <i>
+                        <div *ngIf="media?.movieOrTVShow === Movie; else elseBlock">{{ Tagline }}</div>
+                        <ng-template #elseBlock>Season: {{ media?.season }} of {{ SeasonCount }}</ng-template>
+                    </i>
+                </h5>
+                <p class="card-body">{{ Overview }}</p>
+                <h6 class="card-footer">Runtime: {{ Runtime }} minutes</h6>
+            </div>
+        </div>
+        <div class="col-lg">
+            <img [attr.src]='PosterURL' />
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col">
+            <h5>Top 5 Cast:</h5>
+            <div *ngIf="MovieDetails != null">
+                <dl class="row" *ngFor="let castMember of MovieDetails.credits.cast; index as i">                    
+                    <dt class="col-sm-2" *ngIf="i < 5">
+                        {{ castMember.name }}
+                    </dt>
+                    <dd class="col-auto" *ngIf="i < 5">
+                        {{ castMember.character }}
+                    </dd>                    
+                </dl>
+            </div>
+            <div *ngIf="TVDetails != null">
+                <dl class="row" *ngFor="let castMember of TVDetails.credits.cast; index as i">                    
+                    <dt class="col-sm-2"  *ngIf="i < 5">
+                        {{ castMember.name }}
+                    </dt>
+                    <dd class="col-auto"  *ngIf="i < 5">
+                        {{ castMember.character }}
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+    </div>
+</div>
+

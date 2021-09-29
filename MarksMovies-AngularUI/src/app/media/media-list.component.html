@@ -1,0 +1,87 @@
+<h1>Index</h1>
+
+<p>
+    <a [routerLink]="'/media/create'">Create New </a>
+    <a href="./RankMovies">Rank Movies </a>
+    <a href="./Export">Export </a>
+</p>
+<form>
+    <div class="row">
+        <div>
+            <label for="genre">Genre: </label>
+        </div>
+        <div>
+            <select class="form-control" [(ngModel)]="genreFilter" id="genre" name="genreFilter">
+                <option *ngFor="let val of genreList | EnumSelectPipe" [value]="val.value">{{ val.value }}</option>
+            </select>
+        </div>
+        <div>
+            <label for="title">Title: </label>
+            <input type="text" [(ngModel)]="titleFilter" id="title" name="titleFilter" />
+            <button class="button" type="submit" (click)="FilterMediaList()">Filter</button>
+        </div>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                Title
+            </th>
+            <th>
+                Genres
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Season
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Rating
+            </th>
+            <th>
+                Media Type
+            </th>
+            <th>
+                Rank
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor='let m of mediaList; index as i' id="{{m.id}}">
+           <td>{{ (i + 1) }}</td>
+           <td>{{ m.title }}</td>
+           <td>{{ CF.GetGenresAsString(m.genres) }}</td>
+           <td>
+                <div *ngIf='(m.movieOrTVShow == "Movie"); else elseBlock'>
+                <img
+                    src='assets/Movie2.png'
+                    [title]='m.movieOrTVShow' />
+                </div>
+                <ng-template #elseBlock>
+                <img
+                    src='assets/TV.png'
+                    [title]='m.movieOrTVShow' />
+                </ng-template>
+
+           </td>
+           <td>{{ m.season }}</td>
+           <td>{{ m.year }}</td>
+           <td>{{ m.rating }}</td>
+           <td>{{ m.mediaType }}</td>
+           <td>{{ m.rank }}</td>
+           <td>
+                <a [routerLink]="['/media/details', m.id]">Details </a>
+                <a [routerLink]="['/media/edit', m.id]">Edit </a>
+                <a [routerLink]="['/media/delete', m.id]">Delete </a>
+           </td>
+       </tr>
+    </tbody>
+</table>
+

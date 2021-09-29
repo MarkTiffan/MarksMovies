@@ -46,9 +46,8 @@ namespace MarksMoviesTests
             var tmdbapi = new TMDBapi(httpclient);
             var fis = new FetchImportService(tmdbapi);
             var tmdb_id = 0;
-            var title = "Avenger's Endg";
 
-            var Movie = await fis.ImportMovieAsync(tmdb_id, title);
+            var Movie = await fis.ImportMovieAsync(tmdb_id);
 
             Assert.IsNotNull(Movie);
             Assert.IsTrue(string.IsNullOrEmpty(Movie.Title));
@@ -62,9 +61,8 @@ namespace MarksMoviesTests
             var tmdbapi = new TMDBapi(httpclient);
             var fis = new FetchImportService(tmdbapi);
             var tmdb_id = 299534;
-            var title = "";
 
-            var Movie = await fis.ImportMovieAsync(tmdb_id, title);
+            var Movie = await fis.ImportMovieAsync(tmdb_id);
 
             Assert.IsNotNull(Movie);
             Assert.IsTrue(string.IsNullOrEmpty(Movie.Title));
@@ -78,10 +76,9 @@ namespace MarksMoviesTests
             var tmdbapi = new TMDBapi(httpclient);
             var fis = new FetchImportService(tmdbapi);
             var tmdb_id = 299534;
-            var title = "Avengers Endg";
             var expectedGenreCount = 3;
 
-            var Movie = await fis.ImportMovieAsync(tmdb_id, title);
+            var Movie = await fis.ImportMovieAsync(tmdb_id);
 
             Assert.IsNotNull(Movie);
             Assert.IsTrue(!string.IsNullOrEmpty(Movie.Title));
@@ -129,9 +126,8 @@ namespace MarksMoviesTests
             var tmdbapi = new TMDBapi(httpclient);
             var fis = new FetchImportService(tmdbapi);
             var tmdb_id = 0;
-            var title = "House";
 
-            var Movie = await fis.ImportTVShowAsync(tmdb_id, title);
+            var Movie = await fis.ImportTVShowAsync(tmdb_id);
 
             Assert.IsNotNull(Movie);
             Assert.IsTrue(string.IsNullOrEmpty(Movie.Title));
@@ -145,9 +141,8 @@ namespace MarksMoviesTests
             var tmdbapi = new TMDBapi(httpclient);
             var fis = new FetchImportService(tmdbapi);
             var tmdb_id = 1408;
-            var title = "";
 
-            var Movie = await fis.ImportTVShowAsync(tmdb_id, title);
+            var Movie = await fis.ImportTVShowAsync(tmdb_id);
 
             Assert.IsNotNull(Movie);
             Assert.IsTrue(string.IsNullOrEmpty(Movie.Title));
@@ -161,10 +156,9 @@ namespace MarksMoviesTests
             var tmdbapi = new TMDBapi(httpclient);
             var fis = new FetchImportService(tmdbapi);
             var tmdb_id = 1408;
-            var title = "House";
             var expectedGenreCount = 3;
 
-            var Movie = await fis.ImportTVShowAsync(tmdb_id, title);
+            var Movie = await fis.ImportTVShowAsync(tmdb_id);
 
             Assert.IsNotNull(Movie);
             Assert.IsTrue(!string.IsNullOrEmpty(Movie.Title));
