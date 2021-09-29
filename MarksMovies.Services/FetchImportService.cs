@@ -33,40 +33,31 @@ namespace MarksMovies.Services
         }
 
 
-        public virtual async Task<Movie> ImportMovieAsync(int TMDB_ID, string Title, Movie Movie = null)
+        public virtual async Task<Movie> ImportMovieAsync(int TMDB_ID)
         {
-            if(Movie == null)
-                Movie = new Movie();
+            var Movie = new Movie();
 
-            if (TMDB_ID <= 0 || string.IsNullOrEmpty(Title))
+            if (TMDB_ID <= 0)
                 return Movie;
 
-            SearchMovies searchMovies = await _TMDBapi.FetchMovieAsync(Title);
+            MovieDetails movieDetails = await _TMDBapi.FetchMovieDetailsAsync(TMDB_ID);
 
-            foreach (var result in searchMovies?.results)
-            {
-                if (result.id == TMDB_ID)
-                {
-                    Movie.TMDB_ID = result.id;
-                    Movie.Title = result.title;
+            if (movieDetails == null)
+                return Movie;
 
-                    Movie.Year = Convert.ToDateTime(result.release_date).Year;
+            Movie.TMDB_ID = movieDetails.id;
+            Movie.Title = movieDetails.title;
 
-                    Movie.Genres = new List<Genre>();
-                    result?.genre_ids.ToList()
-                                    .ForEach(genre => Movie.Genres.Add(new Genre(genre)));
+            Movie.Year = Convert.ToDateTime(movieDetails.release_date).Year;
+
+            Movie.Genres = new List<Genre>();
+            movieDetails?.genres.ToList()
+                            .ForEach(genre => Movie.Genres.Add(new Genre(genre.id)));
                     
-                    break;
-                }
-            }
 
             if (Movie.TMDB_ID <= 0)
                 return Movie;
 
-            MovieDetails movieDetails = await _TMDBapi.FetchMovieDetailsAsync(Movie.TMDB_ID);
-
-            if (movieDetails == null)
-                return Movie;
             
             Movie.IMDB_ID = movieDetails.imdb_id;
 
@@ -95,41 +86,34 @@ namespace MarksMovies.Services
 
 
 
-        public virtual async Task<Movie> ImportTVShowAsync(int TMDB_ID, string Title, Movie Movie = null)
+        public virtual async Task<Movie> ImportTVShowAsync(int TMDB_ID)
         {
-            if (Movie == null)
-                Movie = new Movie();
+            var Movie = new Movie();
 
-            if (TMDB_ID <= 0 || string.IsNullOrEmpty(Title))
+            if (TMDB_ID <= 0)
                 return Movie;
-            
-            SearchTV SearchTVShow = await _TMDBapi.FetchTVShowsAsync(Title);
 
-            if (SearchTVShow == null)
-                return Movie;
-            
-            foreach (var result in SearchTVShow.results)
-            {
-                if (result.id != TMDB_ID)
-                    continue;
-                
-                Movie.TMDB_ID = result.id;
-                Movie.Title = result.name;
 
-                Movie.Genres = new List<Genre>();
-
-                result?.genre_ids.ToList()
-                                .ForEach(genre => Movie.Genres.Add(new Genre(genre)));
-                break;  
-            }
-
-            if (Movie.TMDB_ID <= 0)
-                return Movie;
-            
-            TVShowDetails TVShowDetails = await _TMDBapi.FetchTVShowDetailsAsync(Movie.TMDB_ID);
+            TVShowDetails TVShowDetails = await _TMDBapi.FetchTVShowDetailsAsync(TMDB_ID);
 
             if (TVShowDetails == null)
                 return Movie;
+
+
+                
+            Movie.TMDB_ID = TVShowDetails.id;
+            Movie.Title = TVShowDetails.name;
+
+            Movie.Genres = new List<Genre>();
+
+            TVShowDetails?.genres.ToList()
+                            .ForEach(genre => Movie.Genres.Add(new Genre(genre.id)));
+
+
+
+            if (Movie.TMDB_ID <= 0)
+                return Movie;
+
             
             Movie.IMDB_ID = string.Empty;
             Movie.Year = Convert.ToDateTime(TVShowDetails.first_air_date).Year;

@@ -27,6 +27,7 @@ namespace MarksMovies.API
         }
 
         public IConfiguration Configuration { get; }
+        readonly string AllowSpecificOrigins = "_AllowSPecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -64,6 +65,18 @@ namespace MarksMovies.API
                 c.IncludeXmlComments(xmlPath);
 
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                                
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,6 +100,7 @@ namespace MarksMovies.API
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseCors(AllowSpecificOrigins);
 
             app.UseMvc();
         }

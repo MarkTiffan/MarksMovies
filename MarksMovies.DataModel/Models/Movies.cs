@@ -45,7 +45,7 @@ namespace MarksMovies.Models
     {
         [Display(Name = "Movie")]
         Movie = 0,
-        [Display(Name ="TV Show")]
+        [Display(Name ="TV")]
         TV = 1
     }
 

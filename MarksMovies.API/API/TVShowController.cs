@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace MarksMovies.API
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
@@ -15,6 +18,11 @@ namespace MarksMovies.API
 
         private readonly CreateService _createService;
         private readonly DetailsService _detailService;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="CreateService"></param>
+        /// <param name="DetailsService"></param>
         public TVShowController(CreateService CreateService,
                                 DetailsService DetailsService)
         {
@@ -52,22 +60,18 @@ namespace MarksMovies.API
         /// Import fetched tv show data into a Movie object
         /// </summary>
         /// <param name="TMDB_ID">The TMDB ID for the fetched tv show</param>
-        /// <param name="Title">The title of the fetched tv show</param>
-        /// <param name="Movie">An optional Movie object which may contain some values already</param>
         /// <returns>Media item containing the imported values from previous fetch</returns>
-        [HttpPost("import")]
-        [Consumes("application/json")]
+        [HttpGet("import")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Movie>> ImportTVShowAsync(int TMDB_ID, string Title, [FromBody] Movie Movie = null)
+        public async Task<ActionResult<Movie>> ImportTVShowAsync(int TMDB_ID)
         {
-            if (Movie == null)
-                Movie = new Movie();
+            var Movie = new Movie();
 
-            if (TMDB_ID <= 0 || string.IsNullOrEmpty(Title))
+            if (TMDB_ID <= 0 )
                 return Ok(Movie);
 
-            var result = await _createService.ImportTVShowAsync(TMDB_ID, Title, Movie);
+            var result = await _createService.ImportTVShowAsync(TMDB_ID);
             if (result == null)
                 return NotFound();
             else

@@ -98,9 +98,9 @@ namespace MarksMovies.Pages.Movies
                 }
 
                 if(MovieOrTVShowSelection == MovieOrTVShow.Movie)
-                    Movie = await _service.ImportMovieAsync(TMDB_ID, Movie.Title, Movie);
+                    Movie = await _service.ImportMovieAsync(TMDB_ID);
                 else if(MovieOrTVShowSelection == MovieOrTVShow.TV)
-                    Movie = await _service.ImportTVShowAsync(TMDB_ID, Movie.Title, Movie);
+                    Movie = await _service.ImportTVShowAsync(TMDB_ID);
 
                 if (Movie?.Genres?.Count > 0)
                 {

@@ -59,15 +59,12 @@ namespace MarksMovies.WebServices
         }
 
 
-        public virtual async Task<Movie> ImportMovieAsync(int TMDB_ID, string Title, Movie Movie)
+        public virtual async Task<Movie> ImportMovieAsync(int TMDB_ID)
         {
             var requestUrl = "http://localhost:5000/api/Movie/import?TMDB_ID=" + 
-                TMDB_ID + "&" +
-                "title=" + Title;
-            
-            var response = await _httpClient.PostAsync(requestUrl,
-                new StringContent(JsonConvert.SerializeObject(Movie), 
-                    Encoding.UTF8, "application/json"));
+                TMDB_ID;
+
+            var response = await _httpClient.GetAsync(requestUrl);
             
 
             if (!response.IsSuccessStatusCode)
@@ -84,15 +81,12 @@ namespace MarksMovies.WebServices
         }
 
 
-        public virtual async Task<Movie> ImportTVShowAsync(int TMDB_ID, string Title, Movie Movie)
+        public virtual async Task<Movie> ImportTVShowAsync(int TMDB_ID)
         {
             var requestUrl = "http://localhost:5000/api/tvshow/import?TMDB_ID=" +
-                TMDB_ID + "&" +
-                "title=" + Title;
+                TMDB_ID;
 
-            var response = await _httpClient.PostAsync(requestUrl,
-                new StringContent(JsonConvert.SerializeObject(Movie),
-                    Encoding.UTF8, "application/json"));
+            var response = await _httpClient.GetAsync(requestUrl);
 
 
             if (!response.IsSuccessStatusCode)
